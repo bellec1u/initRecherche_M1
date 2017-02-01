@@ -144,4 +144,71 @@ public class EtatP4 implements Etat {
 		return FinDePartie.NON;
 	}
 
+	public Action[] coups_possibles() {
+		int k = 0;
+		// On recupere l'indice de la ligne a plus elevé dans le jeu
+		int max = 0;
+		for (int i = 0 ; i < HAUTEUR ; i++) {
+			for (int j = 0 ; j < LARGEUR ; j++) {
+				if (this.plateau[i][j] != " ") {
+					max = i;
+				}
+			}
+		}
+
+		// car si une ligne a un X / O on peut jouer sur la ligne au dessus
+		max++; 
+
+		/*
+		  Il peut y avoir au plus LARGEUR_MAX coups possibles 
+		  Si un 'pion' sur trouve sur la ligne i 
+		  on ne peut pas jouer un coup sur le meme pion à la ligne i + 2
+		  Les coups possibles sont uniquement ceux où il y a un contact
+		  direct entre le pion adversaire et/ou la ligne horizontale 0
+		 */
+		Action[] a = new Action[7+1]; 
+		for (int i = 0; i <= max; i++) {
+			for (int j = 0 ; j < LARGEUR ; j++) {
+				if (i == 0 && this.plateau[0][j].equals(" ")) {
+					a[k] = new ActionCoupP4(0, j); 
+					k++;
+				} else {
+					if (this.plateau[i][j].equals(" ") && !this.plateau[i - 1][j].equals(" ")) {
+						a[k] = new ActionCoupP4(i, j);
+						k++;
+					}
+				}
+			}
+		}
+		a[k] = null;
+
+		return a;
+	}
+
+	@Override
+	public boolean testActionGagnanteOrdi(Action a) {
+		if (a != null) {
+			String[][] plateauBis = this.plateau;
+			if (this.joueur == 0) {
+				this.plateau[a.getLigne()][a.getColonne()] = "0";
+			} else {
+				this.plateau[a.getLigne()][a.getColonne()] = "X";
+			}
+
+			if (this.testFin() == FinDePartie.ORDI_GAGNE) {
+				this.plateau = plateauBis;
+				return true;
+			} else {
+				this.plateau = plateauBis;
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public String[][] getPlateau() {
+		return this.plateau;
+	}
+	
 }

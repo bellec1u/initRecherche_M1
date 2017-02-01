@@ -29,6 +29,10 @@ public interface Noeud {
 	public int retournerNbSimulation();
 	public int retournerNbVictoire();
 	public int autreJoueur();
+	public void addSimulation();
 	
 	public void visiter(double recompense);
+	public boolean testActionGagnanteOrdi(Action a);
+	public Etat getEtat();
+	public void setNbVictoires(double recompense);
 }

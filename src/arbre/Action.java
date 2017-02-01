@@ -10,7 +10,6 @@ package arbre;
  */
 public interface Action {
 
-	public boolean estGagnante();
 	public int getLigne();
 	public int getColonne();
 	

@@ -11,8 +11,12 @@ public interface Etat {
 	public void afficherJeu();
 	public Action demanderCoup();
 	public FinDePartie testFin();
+	public Action[] coups_possibles();
+	public boolean testActionGagnanteOrdi(Action a);
+	public boolean jouerCoup(Action action);
 	
 	public void setJoueur(int j);
 	public int getJoueur();
+	public String[][] getPlateau();
 	
 }

@@ -10,12 +10,6 @@ public class ActionCoupP4 implements Action {
 		this.ligne = l;
 		this.colonne = c;
 	}
-	
-	@Override
-	public boolean estGagnante() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public int getLigne() {

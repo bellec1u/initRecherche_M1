@@ -53,7 +53,7 @@ public class Main {
 
 		// boucle de jeu
 		do {
-			System.out.println("---------- ---------- ---------- ---------- ----------");
+			System.out.println(" ");
 			etat.afficherJeu();
 			if (etat.getJoueur() == 0) {
 				// tour de l'humain
@@ -101,17 +101,11 @@ public class Main {
 		    	- Mise à jours des valeurs des Noeuds dans l'arbre, on remonte la valeur de récompense
 		    	du Noeud terminal à la racine.
 			 */
-			System.out.println("1");
 			Mcts mcts = new Mcts( new Uct() ); // On execute l'algorithme
-			System.out.println("2");
 			racine = (NoeudP4) mcts.executer(racine);
-			System.out.println("3");
 			toc = System.currentTimeMillis();
-			System.out.println("4");
 			time = (int)((toc - tic) / 1);
-			System.out.println("5");
 			iter++;
-			System.out.println(temps+" ------ "+time);
 		} while (time < temps);
 		
 		System.out.println("Itérations effectuées : " + iter);
