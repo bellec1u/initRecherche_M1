@@ -1,5 +1,7 @@
 package puissance4;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 import arbre.Action;
@@ -7,16 +9,28 @@ import arbre.Etat;
 
 public class EtatP4 implements Etat {
 
+	private int nbCoups = -1;
 	private String[][] plateau;
-	private int joueur;
+	private final int HAUTEUR = 6, LARGEUR = 7, PUISSANCE = 4;
+	private int joueur = -1;
 
-	public final static int HAUTEUR = 6, LARGEUR = 7, TEMPS = 1000, PUISSANCE = 4;
-
-	public void init() {
-		this.plateau = new String[HAUTEUR][LARGEUR];
-		for (int l = 0; l < HAUTEUR; l++)
-			for (int c = 0; c < LARGEUR; c++)
+	public EtatP4() {
+		plateau = new String[HAUTEUR][LARGEUR];
+		for (int l = 0; l < HAUTEUR; l++) {
+			for (int c = 0; c < LARGEUR; c++) {
 				this.plateau[l][c] = " ";
+			}
+		}
+	}
+
+	public EtatP4(Etat etat) {
+		plateau = new String[HAUTEUR][LARGEUR];
+		String[][] cpy = etat.getPlateau();
+		for(int i = 0 ; i < HAUTEUR ; i++) {
+			for( int j = 0 ; j < LARGEUR ; j++) {
+				this.plateau[i][j] = cpy[i][j];
+			}
+		}
 	}
 
 	public void afficherJeu() {
@@ -35,39 +49,11 @@ public class EtatP4 implements Etat {
 		}
 	}
 
-	public boolean jouerCoup(Action action) {
-		/* par exemple : */
-		if (this.plateau[action.getLigne()][action.getColonne()] != " ") {
-			return false;
-		} else {
-			this.plateau[action.getLigne()][action.getColonne()] = ((this.joueur == 0) ? "O" : "X");
-
-			// à l'autre joueur de jouer
-			this.changerJoueur(); 	
-			return true;
-		}	
-	}
-
-	public void changerJoueur() {
-		if (this.joueur == 0) {
-			this.joueur = 1;
-		} else {
-			this.joueur = 0;
-		}
-	}
-
-	public void setJoueur(int j) {
-		this.joueur = j;
-	}
-
-	public int getJoueur() {
-		return this.joueur;
-	}
-
-	public ActionCoupP4 demanderCoup() {
+	public Action demanderAction() {
 		int ligne = HAUTEUR - 1;
-		int colonne = HAUTEUR -1;
+		int colonne = LARGEUR -1;
 		boolean jouable = false;
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 
 		while (!jouable) {
@@ -95,7 +81,7 @@ public class EtatP4 implements Etat {
 				}
 			}
 		}
-		return (new ActionCoupP4(ligne, colonne));
+		return (new ActionP4(ligne, colonne));
 	}
 
 	public FinDePartie testFin() {
@@ -108,30 +94,30 @@ public class EtatP4 implements Etat {
 
 					// lignes
 					k = 0;
-					while ( k < PUISSANCE && i+k < HAUTEUR && this.plateau[i+k][j] == this.plateau[i][j] ) 
+					while ( k < PUISSANCE && i+k < HAUTEUR && this.plateau[i+k][j].equals(this.plateau[i][j]) ) 
 						k++;
 					if ( k == PUISSANCE ) 
-						return this.plateau[i][j] == "O"? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;
+						return this.plateau[i][j].equals("O")? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;
 
 					// colonnes
 					k=0;
-					while ( k < PUISSANCE && j+k < LARGEUR && this.plateau[i][j+k] == this.plateau[i][j] ) 
+					while ( k < PUISSANCE && j+k < LARGEUR && this.plateau[i][j+k].equals(this.plateau[i][j]) ) 
 						k++;
 					if ( k == PUISSANCE ) 
-						return this.plateau[i][j] == "O"? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;
+						return this.plateau[i][j].equals("O")? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;
 
 					// diagonales
 					k=0;
-					while ( k < PUISSANCE && i+k < HAUTEUR && j+k < LARGEUR && this.plateau[i+k][j+k] == this.plateau[i][j] ) 
+					while ( k < PUISSANCE && i+k < HAUTEUR && j+k < LARGEUR && this.plateau[i+k][j+k].equals(this.plateau[i][j]) ) 
 						k++;
 					if ( k == PUISSANCE ) 
-						return this.plateau[i][j] == "O"? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;
+						return this.plateau[i][j].equals("O")? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;
 
 					k=0;
-					while ( k < PUISSANCE && i+k < HAUTEUR && j-k >= 0 && this.plateau[i+k][j-k] == this.plateau[i][j] ) 
+					while ( k < PUISSANCE && i+k < HAUTEUR && j-k >= 0 && this.plateau[i+k][j-k].equals(this.plateau[i][j]) ) 
 						k++;
 					if ( k == PUISSANCE ) 
-						return this.plateau[i][j] == "O"? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;		
+						return this.plateau[i][j].equals("O")? FinDePartie.ORDI_GAGNE : FinDePartie.HUMAIN_GAGNE;		
 				}
 			}
 		}
@@ -143,70 +129,69 @@ public class EtatP4 implements Etat {
 		return FinDePartie.NON;
 	}
 
-	public Action[] coups_possibles() {
-		int k = 0;
-		// On recupere l'indice de la ligne a plus elevé dans le jeu
-		int max = 0;
-		for (int i = 0 ; i < HAUTEUR ; i++) {
-			for (int j = 0 ; j < LARGEUR ; j++) {
-				if (this.plateau[i][j] != " ") {
-					max = i;
-				}
-			}
-		}
-
-		// car si une ligne a un X / O on peut jouer sur la ligne au dessus
-		max++; 
-
-		/*
-		  Il peut y avoir au plus LARGEUR_MAX coups possibles 
-		  Si un 'pion' sur trouve sur la ligne i 
-		  on ne peut pas jouer un coup sur le meme pion à la ligne i + 2
-		  Les coups possibles sont uniquement ceux où il y a un contact
-		  direct entre le pion adversaire et/ou la ligne horizontale 0
-		 */
-		Action[] a = new Action[7+1]; 
-		for (int i = 0; i <= max; i++) {
-			for (int j = 0 ; j < LARGEUR ; j++) {
-				if (i == 0 && this.plateau[0][j].equals(" ")) {
-					a[k] = new ActionCoupP4(0, j); 
-					k++;
+	/**
+	 * Retourne le nombre d'actions possibles à partir de l'Etat etat
+	 */
+	public List<Action> coups_possibles() {
+		List<Action> actions = new LinkedList<Action>();
+		// pour chaque colonnes
+		for (int i = 0; i < LARGEUR ; i++) {
+			boolean trouve = false;
+			int j = 0;
+			// pour chaque lignes != " "
+			while (!trouve && j < HAUTEUR-1 ) {
+				if (plateau[j][i].equals(" ")) {
+					trouve = true;
+					actions.add(new ActionP4(j,i));
 				} else {
-					if (this.plateau[i][j].equals(" ") && !this.plateau[i - 1][j].equals(" ")) {
-						a[k] = new ActionCoupP4(i, j);
-						k++;
-					}
+					j++;
 				}
 			}
-		}
-		a[k] = null;
-
-		return a;
+		}	
+		nbCoups = actions.size();		
+		return actions;
 	}
 
-	public boolean testActionGagnanteOrdi(Action a) {
-		if (a != null) {
-			String[][] plateauBis = this.plateau;
-			if (this.joueur == 0) {
-				this.plateau[a.getLigne()][a.getColonne()] = "0";
-			} else {
-				this.plateau[a.getLigne()][a.getColonne()] = "X";
-			}
-
-			if (this.testFin() == FinDePartie.ORDI_GAGNE) {
-				this.plateau = plateauBis;
-				return true;
-			} else {
-				this.plateau = plateauBis;
-				return false;
-			}
-		} else {
-			return false;
-		}
+	/**
+	 * Set le futur Joueur
+	 */
+	public void setJoueur(int j) {
+		joueur = j;
 	}
 
+	/**
+	 * Retourne le Joueur
+	 */
+	public int getJoueur() {
+		return joueur;
+	}
+
+	/**
+	 * Retourne le plateau de Jeu
+	 */
 	public String[][] getPlateau() {
-		return this.plateau;
+		return plateau;
 	}
-	
+
+	public int getNbCoups() {
+		if( nbCoups == -1 ) {
+			coups_possibles();
+		}
+		return nbCoups;
+	}
+
+	/**
+	 * Ajoute l'action action dans le plateau de jeu
+	 */
+	public boolean jouerAction(Action action) {
+		if (this.plateau[action.getLigne()][action.getColonne()] != " ") {
+			return false;
+		} else {
+			this.plateau[action.getLigne()][action.getColonne()] = ((this.joueur == 0) ? "X" : "O");
+
+			// à l'autre joueur de jouer
+			joueur = (1 - joueur);
+			return true;
+		} 
+	}
 }

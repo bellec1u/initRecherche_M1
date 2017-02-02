@@ -3,6 +3,7 @@
  */
 package algorithme;
 
+import arbre.Etat;
 import arbre.Noeud;
 
 /**
@@ -18,21 +19,22 @@ public class Uct implements FormuleSelection{
 		double min = Double.MIN_VALUE;
 		double bValeur = 0.0;
 		
-		Noeud meilleur = noeud;
+		int best = 0;
 		Noeud enfant = null;
+		Etat etat = null;
 		
 		for( int i = 0 ; i < noeud.retournerNbEnfant() ; i++ ) {
 			enfant = noeud.retournerEnfant(i);
-			bValeur = ( enfant.rapportVictoireSimulation() ) * Math.pow(-1.0, enfant.autreJoueur() );
+			etat = enfant.getEtat();
+			bValeur = ( enfant.rapportVictoireSimulation() ) * Math.pow(-1.0, (1 - etat.getJoueur()) );
 			bValeur += parametreDExploration * Math.sqrt( Math.log( noeud.retournerNbSimulation() ) / enfant.retournerNbSimulation());
 			
 			if ( bValeur > min ) {
 				min = bValeur;
-				meilleur = noeud.retournerEnfant(i);
+				best = i;
 			}
 		}
-		
-		return meilleur;
+		return noeud.retournerEnfant(best);
 	}
 
 }

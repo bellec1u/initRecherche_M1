@@ -21,18 +21,20 @@ public interface Noeud {
 	public Noeud ajouterEnfant(Action action);
 	public Noeud predecesseur();
 	public Noeud retournerEnfant(int indice);;
+	public Action getAction();
+	public Etat getEtat();
 	
 	public double resultat();
 	public double rapportVictoireSimulation();
+	public double retournerNbVictoire();
 	
 	public int retournerNbEnfant();
 	public int retournerNbSimulation();
-	public int retournerNbVictoire();
-	public int autreJoueur();
-	public void addSimulation();
-	
+		
 	public void visiter(double recompense);
-	public boolean testActionGagnanteOrdi(Action a);
-	public Etat getEtat();
-	public void setNbVictoires(double recompense);
+	public void ajouterVisite(double recompense);
+	public void setStatistique(int s, double v);
+	public void afficherStatistiques();
+	public void robuste();
+	public void maxi();
 }

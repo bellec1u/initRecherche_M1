@@ -1,160 +1,195 @@
 package puissance4;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import arbre.Action;
 import arbre.Etat;
-import arbre.Etat.FinDePartie;
 import arbre.Noeud;
+import arbre.Etat.FinDePartie;
 
 public class NoeudP4 implements Noeud {
-	private int joueur = 0; // joueur qui a joué pour arriver ici
-	private Action action;   // coup joué par ce joueur pour arriver ici
 
-	private Etat etat; // etat du jeu
+	private Noeud parent = null;
+	private Action action = null;
 
-	private Noeud parent;
-	private List<Noeud> enfants = new ArrayList<Noeud>(); // liste d'enfants : chaque enfant correspond à un coup possible
-	private int nb_enfants = 0;	// Nombre de simulations passant par ce Noeud (N)
+	private Etat etat;
+	private List<Noeud> enfants;
 
-	// POUR MCTS:
-	private int nb_victoires = 0;
-	private int nb_simulations = 0;
+	private int simulations = 0;
+	private double victoires = 0.0;
+
+	public NoeudP4(Etat e) {
+		etat = new EtatP4(e);
+		enfants = new LinkedList<Noeud> ();
+	}
 
 	public NoeudP4(Noeud p, Action a) {
-		if (p != null && a != null) {
-			this.parent = p;
-			this.action = a;
-			Etat etatParent = this.parent.getEtat();
-			etatParent.jouerCoup(a);
-			this.etat = etatParent;
-		} else {
-			this.etat = new EtatP4();
-			this.etat.init();
-		}
+		parent = p;
+		enfants = new LinkedList<Noeud> ();
+		action = a;
+		etat = new EtatP4(parent.getEtat());
+		etat.jouerAction(a);
 	}
 
+	/**
+	 * Indique si le Noeud est terminal ou non
+	 */
 	public boolean estTerminal() {
-		return (this.etat.testFin() != FinDePartie.NON);
+		return (etat.testFin() != FinDePartie.NON);
 	}
 
+	/**
+	 * Indique s'il reste des actions possibles à effectuées
+	 * à partir du Noeud this
+	 */
 	public boolean resteAction() {
-		Action[] a = this.etat.coups_possibles();
-		int k = 0;
-		while(a[k] != null) {
-			k++;
-		}
-		return (k != this.nb_enfants);
+		return ( enfants.size() != etat.getNbCoups() );
 	}
 
+	/**
+	 * Indique si le Noeud est racine
+	 */
 	public boolean estRacine() {
-		return (this.parent == null);
+		return (parent == null);
 	}
 
+	/**
+	 * Retourne le nombre d'actions possibles à partir de l'Etat etat
+	 */
 	public List<Action> actionsPossible() {
-		Action[] a = this.etat.coups_possibles();
-		List<Action> res = Arrays.asList(a);
-		return res;
+		return etat.coups_possibles();
 	}
 
-	public Noeud ajouterEnfant(Action a) {
-		Noeud e = new NoeudP4(this, a) ;
-		this.enfants.add(e);
-		this.nb_enfants++;
-		return e;
+	/**
+	 * Ajoute un Noeud enfant au Noeud this,
+	 * avec l'Action action
+	 */
+	public Noeud ajouterEnfant(Action action) {
+		Noeud enfant = new NoeudP4(this, action);
+		enfants.add(enfant);
+		return enfant;
 	}
 
+	/**
+	 * Retourne le Noeud parent
+	 */
 	public Noeud predecesseur() {
-		return this.parent;
+		return parent;
 	}
 
+	/**
+	 * Retourne le Noeud Enfant 'indice'
+	 */
 	public Noeud retournerEnfant(int indice) {
-		return this.enfants.get(indice);
+		return enfants.get(indice);
 	}
 
-	
+	/**
+	 * Retourne l'Action liée au Noeud
+	 */
+	public Action getAction() {
+		return action;
+	}
+
+	/**
+	 * Retourne l'Etat du Noeud
+	 */
+	public Etat getEtat() {
+		return etat;
+	}
+
+	/**
+	 * Indique la recompense du Noeud, 
+	 * si c'est un Noeud HUMAIN_GAGNANT, ORDI_GAGNANT ETC...
+	 */
 	public double resultat() {
-		FinDePartie e = this.etat.testFin();
-		double res = 0.5;
-		switch(e) {
+		FinDePartie res = etat.testFin();
+		double recomp = 0.0;
+		switch (res) {
 		case ORDI_GAGNE :
-			res = 1;
+			recomp = 1.0;
 			break;
 		case HUMAIN_GAGNE :
-			res = 0;
+			recomp = 0.0;
 			break;
 		case MATCHNUL :
+			recomp = 0.5;
 			break;
-		default :
-			System.err.println("Error NoeudP4 -> resultat()");
+		default:
+			System.err.println("Oops ! (NoeudP4).resultat()");
 			break;
 		}
-		return res;
+		return recomp;
 	}
 
-	
-	public double rapportVictoireSimulation() {
-		return (this.nb_victoires / this.nb_simulations);
+	/**
+	 * Retourne le rapport Victoire / Simulation
+	 */
+	public double rapportVictoireSimulation() {		
+		return (double)( victoires / simulations );
 	}
 
-	
+	/**
+	 * Retourne le nombre de Noeud enfant
+	 */
 	public int retournerNbEnfant() {
-		return this.nb_enfants;
+		return enfants.size();
 	}
 
-	
+	/**
+	 * Retourne le nombre de simulation du Noeud
+	 */
 	public int retournerNbSimulation() {
-		return this.nb_simulations;
+		return simulations;
 	}
 
-	
-	public int retournerNbVictoire() {
-		return this.nb_victoires;
+	/**
+	 * Retourne le nombre de victoire du Noeud
+	 */
+	public double retournerNbVictoire() {
+		return victoires;
 	}
 
-	
-	public int autreJoueur() {
-		int res = 0;
-		if (this.joueur == 0) {
-			res = 1;
-		}
-		return res;
-	}
 
-	
+	/**
+	 * Ajoute a victoires la valeur de recompense
+	 * et increment le nombre de simulations
+	 */
 	public void visiter(double recompense) {
-		this.parent.addSimulation();
-		this.parent.setNbVictoires(recompense);
+		parent.ajouterVisite(recompense);
 	}
 
-	public void setEtat(Etat e) {
-		this.etat = e;
+	/**
+	 * Fixe le nombre de simulations et de victoires
+	 */
+	public void setStatistique(int s, double v) {
+		simulations = s;
+		victoires = v;
+	}
+	/**
+	 * Incremente le nombre de simulation
+	 * et victoire
+	 */
+	public void ajouterVisite(double recompense) {
+		simulations++;
+		victoires += recompense;
 	}
 
 	public void afficherStatistiques() {
 		System.out.println("Statistiques : \n");
-		System.out.println("\t-Nombre de victoire(s) : " + this.nb_victoires);
-		System.out.println("\t-Nombre de simulation(s) : " + this.nb_simulations);
-		float pourcentage = (float)(this.nb_victoires / (float)this.nb_simulations) * 100.0f ;
+		System.out.println("\t-Nombre de victoire(s) : " + victoires);
+		System.out.println("\t-Nombre de simulation(s) : " + simulations);
+		double pourcentage = (victoires / simulations) * 100.0 ;
 		System.out.println("\t-Pourcentage : " + pourcentage);
-
 	}
 
-	public Noeud robuste() {
+	public void robuste() {
 		int k = 0;
 		int maxi = Integer.MIN_VALUE;
 		int indice = 0;
 		int value = 0;
-		while(k < this.nb_enfants ) {
-			boolean AMELIORATION = true;
-			if( AMELIORATION ) {
-				if (this.enfants.get(k).estTerminal()) {
-					return this.enfants.get(k);
-				}
-			}
-
+		while(k < enfants.size() ) {
 			value = this.enfants.get(k).retournerNbSimulation();
 			if (value > maxi) {
 				maxi = value;
@@ -162,22 +197,15 @@ public class NoeudP4 implements Noeud {
 			}
 			k++;
 		}
-		return this.enfants.get(indice);
+		action = enfants.get(indice).getAction();
 	}
 
-	public Noeud maxi() {
+	public void maxi() {
 		int k = 0;
-		float maxi = Integer.MIN_VALUE;
+		double maxi = Integer.MIN_VALUE;
 		int indice = 0;
-		float value = 0;
-		while(k < this.nb_enfants ) {
-			boolean AMELIORATION = true;
-			if( AMELIORATION ) {
-				if (this.enfants.get(k).estTerminal()) {
-					return this.enfants.get(k);
-				}
-			}
-
+		double value = 0;
+		while(k < enfants.size() ) {
 			value = this.enfants.get(k).retournerNbVictoire();
 			if( value > maxi) {
 				maxi = value;
@@ -185,35 +213,6 @@ public class NoeudP4 implements Noeud {
 			}
 			k++;
 		}
-		return this.enfants.get(indice);	
+		action = enfants.get(indice).getAction();
 	}
-
-	public Action getAction() {
-		return this.action;
-	}
-
-	
-	public boolean testActionGagnanteOrdi(Action a) {
-		if (this.etat.testActionGagnanteOrdi(a)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	
-	public Etat getEtat() {
-		return this.etat;
-	}
-
-	
-	public void addSimulation() {
-		this.nb_simulations++;
-	}
-
-	
-	public void setNbVictoires(double recompense) {
-		this.nb_victoires += recompense;
-	}
-
 }
