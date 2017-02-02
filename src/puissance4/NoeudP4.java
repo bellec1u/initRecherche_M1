@@ -73,8 +73,6 @@ public class NoeudP4 implements Noeud {
 
 	@Override
 	public Noeud predecesseur() {
-		System.out.println("predecesseur");
-		// TODO Auto-generated method stub
 		return this.parent;
 	}
 
@@ -85,15 +83,26 @@ public class NoeudP4 implements Noeud {
 
 	@Override
 	public double resultat() {
-		System.out.println("resultat");
-		// TODO Auto-generated method stub
-		return this.nb_victoires;
+		FinDePartie e = this.etat.testFin();
+		double res = 0.5;
+		switch(e) {
+		case ORDI_GAGNE :
+			res = 1;
+			break;
+		case HUMAIN_GAGNE :
+			res = 0;
+			break;
+		case MATCHNUL :
+			break;
+		default :
+			System.err.println("Error NoeudP4 -> resultat()");
+			break;
+		}
+		return res;
 	}
 
 	@Override
 	public double rapportVictoireSimulation() {
-		System.out.println("rapportVictoireSimulation");
-		// TODO Auto-generated method stub
 		return (this.nb_victoires / this.nb_simulations);
 	}
 
@@ -114,8 +123,6 @@ public class NoeudP4 implements Noeud {
 
 	@Override
 	public int autreJoueur() {
-		System.out.println("autreJoueur");
-		// TODO Auto-generated method stub
 		int res = 0;
 		if (this.joueur == 0) {
 			res = 1;

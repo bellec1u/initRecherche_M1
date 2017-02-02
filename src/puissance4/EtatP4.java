@@ -10,7 +10,7 @@ public class EtatP4 implements Etat {
 	private String[][] plateau;
 	private int joueur;
 
-	public final static int HAUTEUR = 6, LARGEUR = 7, TEMPS = 1, PUISSANCE = 4;
+	public final static int HAUTEUR = 6, LARGEUR = 7, TEMPS = 1000, PUISSANCE = 4;
 
 	public void init() {
 		this.plateau = new String[HAUTEUR][LARGEUR];
