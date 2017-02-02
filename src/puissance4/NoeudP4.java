@@ -36,12 +36,10 @@ public class NoeudP4 implements Noeud {
 		}
 	}
 
-	@Override
 	public boolean estTerminal() {
 		return (this.etat.testFin() != FinDePartie.NON);
 	}
 
-	@Override
 	public boolean resteAction() {
 		Action[] a = this.etat.coups_possibles();
 		int k = 0;
@@ -51,19 +49,16 @@ public class NoeudP4 implements Noeud {
 		return (k != this.nb_enfants);
 	}
 
-	@Override
 	public boolean estRacine() {
 		return (this.parent == null);
 	}
 
-	@Override
 	public List<Action> actionsPossible() {
 		Action[] a = this.etat.coups_possibles();
 		List<Action> res = Arrays.asList(a);
 		return res;
 	}
 
-	@Override
 	public Noeud ajouterEnfant(Action a) {
 		Noeud e = new NoeudP4(this, a) ;
 		this.enfants.add(e);
@@ -71,17 +66,15 @@ public class NoeudP4 implements Noeud {
 		return e;
 	}
 
-	@Override
 	public Noeud predecesseur() {
 		return this.parent;
 	}
 
-	@Override
 	public Noeud retournerEnfant(int indice) {
 		return this.enfants.get(indice);
 	}
 
-	@Override
+	
 	public double resultat() {
 		FinDePartie e = this.etat.testFin();
 		double res = 0.5;
@@ -101,27 +94,27 @@ public class NoeudP4 implements Noeud {
 		return res;
 	}
 
-	@Override
+	
 	public double rapportVictoireSimulation() {
 		return (this.nb_victoires / this.nb_simulations);
 	}
 
-	@Override
+	
 	public int retournerNbEnfant() {
 		return this.nb_enfants;
 	}
 
-	@Override
+	
 	public int retournerNbSimulation() {
 		return this.nb_simulations;
 	}
 
-	@Override
+	
 	public int retournerNbVictoire() {
 		return this.nb_victoires;
 	}
 
-	@Override
+	
 	public int autreJoueur() {
 		int res = 0;
 		if (this.joueur == 0) {
@@ -130,7 +123,7 @@ public class NoeudP4 implements Noeud {
 		return res;
 	}
 
-	@Override
+	
 	public void visiter(double recompense) {
 		this.parent.addSimulation();
 		this.parent.setNbVictoires(recompense);
@@ -199,7 +192,7 @@ public class NoeudP4 implements Noeud {
 		return this.action;
 	}
 
-	@Override
+	
 	public boolean testActionGagnanteOrdi(Action a) {
 		if (this.etat.testActionGagnanteOrdi(a)) {
 			return true;
@@ -208,17 +201,17 @@ public class NoeudP4 implements Noeud {
 		}
 	}
 
-	@Override
+	
 	public Etat getEtat() {
 		return this.etat;
 	}
 
-	@Override
+	
 	public void addSimulation() {
 		this.nb_simulations++;
 	}
 
-	@Override
+	
 	public void setNbVictoires(double recompense) {
 		this.nb_victoires += recompense;
 	}

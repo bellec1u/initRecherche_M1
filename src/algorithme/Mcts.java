@@ -23,7 +23,6 @@ public class Mcts implements Algorithme{
 		formule = form;
 	}
 	
-	@Override
 	public Noeud executer(Noeud noeud) {
 		Noeud meilleurChoix = selectionner(noeud);
 

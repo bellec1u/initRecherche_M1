@@ -11,12 +11,10 @@ public class ActionCoupP4 implements Action {
 		this.colonne = c;
 	}
 
-	@Override
 	public int getLigne() {
 		return this.ligne;
 	}
 
-	@Override
 	public int getColonne() {
 		return this.colonne;
 	}

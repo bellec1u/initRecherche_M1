@@ -98,7 +98,6 @@ public class EtatP4 implements Etat {
 		return (new ActionCoupP4(ligne, colonne));
 	}
 
-	@Override
 	public FinDePartie testFin() {
 		// tester si un joueur a gagné
 		int i, j, k, n = 0;
@@ -185,7 +184,6 @@ public class EtatP4 implements Etat {
 		return a;
 	}
 
-	@Override
 	public boolean testActionGagnanteOrdi(Action a) {
 		if (a != null) {
 			String[][] plateauBis = this.plateau;

@@ -14,7 +14,6 @@ public class Uct implements FormuleSelection{
 
 	private final double parametreDExploration = Math.sqrt(2.0);
 	
-	@Override
 	public Noeud selectionner(Noeud noeud) {
 		double min = Double.MIN_VALUE;
 		double bValeur = 0.0;
