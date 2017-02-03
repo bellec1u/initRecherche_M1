@@ -12,6 +12,8 @@ public interface Action {
 
 	public int getLigne();
 	public int getColonne();
+	
 	public boolean estGagnante(Etat etat);
 	
+	public String toString();
 }

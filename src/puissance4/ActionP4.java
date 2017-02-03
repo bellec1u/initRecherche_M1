@@ -32,6 +32,10 @@ public class ActionP4 implements Action {
 		return (ligne == a.getLigne() && colonne == a.getColonne());
 	}
 	
+	@Override
+	public String toString() {
+		return "(" + (ligne + 1) + ", " + (colonne + 1) + ")";
+	}
 	
 
 }

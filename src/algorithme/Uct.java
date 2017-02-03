@@ -26,9 +26,8 @@ public class Uct implements FormuleSelection{
 		for( int i = 0 ; i < noeud.retournerNbEnfant() ; i++ ) {
 			enfant = noeud.retournerEnfant(i);
 			etat = enfant.getEtat();
-			bValeur = ( enfant.rapportVictoireSimulation() ) * Math.pow(-1.0, (1 - etat.getJoueur()) );
+			bValeur = ( enfant.rapportVictoireSimulation() ) * Math.pow(-1.0, etat.getJoueur() );
 			bValeur += parametreDExploration * Math.sqrt( Math.log( noeud.retournerNbSimulation() ) / enfant.retournerNbSimulation());
-			
 			if ( bValeur > min ) {
 				min = bValeur;
 				best = i;

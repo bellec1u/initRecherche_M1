@@ -37,23 +37,25 @@ public class Main {
 		FinDePartie fin = FinDePartie.NON;
 
 		// initialisation
-		Etat etat = new EtatP4();
+		Etat etat = null;
 
 		// choix j1
 		boolean correct = false;
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
+		int joueur = 0;
 		do {
 			System.out.println("Qui commence ? (0 : humain, 1 : ordinateur)");
 			String res = sc.nextLine();
 			if (res.equals("0") || res.equals("1")) {
 				correct = true;
-				etat.setJoueur(Integer.parseInt(res));
+				joueur = Integer.parseInt(res);
 			} else {
 				System.out.println("Entrées valides : 0 ou 1 !");
 			}
 		} while (!correct);
-
+		
+		etat = new EtatP4(joueur);
 		System.out.println("Temps de réflexion de l'ordinateur : " + Configuration.getInstance().getTemps());
 
 		// boucle de jeu
@@ -114,25 +116,16 @@ public class Main {
 		} while (toc < (tic + temps));
 		System.out.println("Itérations effectuées : " + iter);
 		
-		// fin de l'algorithme
-		racine.afficherStatistiques();
-		
-		// On choisit la bonne strategie demandée par l'utilisateur
-		/*if (strategie) {
-			// robuste
-			racine = (NoeudP4) racine.robuste();
-		} else {
-			// maxi
-			racine = (NoeudP4) racine.maxi();
-		}*/
+		/* 
+		 * fin de l'algorithme		
+		 * On choisit la bonne strategie demandée par l'utilisateur
+		 */
 		racine.robuste();
-		// Jouer le meilleur premier coup
-		Noeud best = uct.selectionner(racine);
+		System.out.println("Action choisit : " + racine.getAction());
 		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
-			System.out.println(racine.retournerEnfant(i).getAction().getColonne());
 			racine.retournerEnfant(i).afficherStatistiques();
 		}
-		etat.jouerAction(best.getAction());
+		etat.jouerAction(racine.getAction());
 	}
 
 }

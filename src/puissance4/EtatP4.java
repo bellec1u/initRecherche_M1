@@ -14,7 +14,8 @@ public class EtatP4 implements Etat {
 	private final int HAUTEUR = 6, LARGEUR = 7, PUISSANCE = 4;
 	private int joueur = -1;
 
-	public EtatP4() {
+	public EtatP4(int j) {
+		joueur = j;
 		plateau = new String[HAUTEUR][LARGEUR];
 		for (int l = 0; l < HAUTEUR; l++) {
 			for (int c = 0; c < LARGEUR; c++) {
@@ -157,14 +158,14 @@ public class EtatP4 implements Etat {
 	 * Set le futur Joueur
 	 */
 	public void setJoueur(int j) {
-		joueur = j;
+		this.joueur = j;
 	}
 
 	/**
 	 * Retourne le Joueur
 	 */
 	public int getJoueur() {
-		return joueur;
+		return this.joueur;
 	}
 
 	/**
@@ -191,7 +192,7 @@ public class EtatP4 implements Etat {
 			this.plateau[action.getLigne()][action.getColonne()] = ((this.joueur == 0) ? "X" : "O");
 
 			// à l'autre joueur de jouer
-			joueur = (1 - joueur);
+			this.joueur = (1 - this.joueur);
 			return true;
 		} 
 	}

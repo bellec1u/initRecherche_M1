@@ -54,7 +54,7 @@ public class Mcts implements Algorithme{
 	private Noeud developper(Noeud noeud) {
 		List<Action> actions = noeud.actionsPossible();
 		for (Action a : actions) {
-			if ( a.estGagnante(noeud.getEtat()) ) {
+			if ( a.estGagnante( noeud.getEtat() ) ) {
 				return noeud.ajouterEnfant(a);
 			}
 		}
@@ -76,12 +76,11 @@ public class Mcts implements Algorithme{
 	private Noeud mettreAJour(Noeud noeud) {
 		double recompense = noeud.resultat();
 		
-		noeud.setStatistique(1, recompense);
 		while( !noeud.estRacine() ) {
 			noeud.visiter(recompense);
 			noeud = noeud.predecesseur();
 		}
-
+		noeud.visiter(recompense);
 		return noeud;
 	}
 
