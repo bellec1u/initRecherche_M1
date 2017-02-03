@@ -26,6 +26,12 @@ public class ActionP4 implements Action {
 		return colonne;
 	}
 
-
+	@Override
+	public boolean equals(Object obj) {
+		Action a = (Action)obj;
+		return (ligne == a.getLigne() && colonne == a.getColonne());
+	}
+	
+	
 
 }

@@ -31,6 +31,7 @@ public class EtatP4 implements Etat {
 				this.plateau[i][j] = cpy[i][j];
 			}
 		}
+		joueur = etat.getJoueur();
 	}
 
 	public void afficherJeu() {
@@ -139,7 +140,7 @@ public class EtatP4 implements Etat {
 			boolean trouve = false;
 			int j = 0;
 			// pour chaque lignes != " "
-			while (!trouve && j < HAUTEUR-1 ) {
+			while (!trouve && j < HAUTEUR ) {
 				if (plateau[j][i].equals(" ")) {
 					trouve = true;
 					actions.add(new ActionP4(j,i));

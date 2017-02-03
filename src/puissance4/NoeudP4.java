@@ -29,7 +29,7 @@ public class NoeudP4 implements Noeud {
 		enfants = new LinkedList<Noeud> ();
 		action = a;
 		etat = new EtatP4(parent.getEtat());
-		etat.jouerAction(a);
+		etat.jouerAction(a);		
 	}
 
 	/**
@@ -58,7 +58,12 @@ public class NoeudP4 implements Noeud {
 	 * Retourne le nombre d'actions possibles à partir de l'Etat etat
 	 */
 	public List<Action> actionsPossible() {
-		return etat.coups_possibles();
+		List<Action> all = etat.coups_possibles();
+		for(int i = 0 ; i < enfants.size() ; i++) {
+			Noeud enfant = enfants.get(i);
+			all.remove(enfant.getAction());
+		}
+		return all;
 	}
 
 	/**

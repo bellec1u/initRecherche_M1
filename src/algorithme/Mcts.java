@@ -64,7 +64,7 @@ public class Mcts implements Algorithme{
 	/* 3. */
 	private Noeud simuler(Noeud noeud) {
 		Noeud simulation = noeud;
-
+		
 		while( !simulation.estTerminal() ) {
 			simulation = developper(simulation);
 		}
@@ -74,8 +74,8 @@ public class Mcts implements Algorithme{
 
 	/* 4. */
 	private Noeud mettreAJour(Noeud noeud) {
-
 		double recompense = noeud.resultat();
+		
 		noeud.setStatistique(1, recompense);
 		while( !noeud.estRacine() ) {
 			noeud.visiter(recompense);

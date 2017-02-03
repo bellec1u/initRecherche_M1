@@ -128,6 +128,10 @@ public class Main {
 		racine.robuste();
 		// Jouer le meilleur premier coup
 		Noeud best = uct.selectionner(racine);
+		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
+			System.out.println(racine.retournerEnfant(i).getAction().getColonne());
+			racine.retournerEnfant(i).afficherStatistiques();
+		}
 		etat.jouerAction(best.getAction());
 	}
 
