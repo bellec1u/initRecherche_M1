@@ -20,8 +20,10 @@ public interface Noeud {
 	
 	public Noeud ajouterEnfant(Action action);
 	public Noeud predecesseur();
-	public Noeud retournerEnfant(int indice);;
+	public Noeud retournerEnfant(int indice);
+	
 	public Action getAction();
+	
 	public Etat getEtat();
 	
 	public double resultat();

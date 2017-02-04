@@ -14,6 +14,13 @@ public class EtatP4 implements Etat {
 	private final int HAUTEUR = 6, LARGEUR = 7, PUISSANCE = 4;
 	private int joueur = -1;
 
+	/***
+	 * Constructeur d'EtatP4,
+	 * ce constructeur initialise le plateau
+	 * de Jeu ‡ vide partout,
+	 * et set le joueur ‡ 'j'
+	 * @param j - Le joueur
+	 */
 	public EtatP4(int j) {
 		joueur = j;
 		plateau = new String[HAUTEUR][LARGEUR];
@@ -24,6 +31,11 @@ public class EtatP4 implements Etat {
 		}
 	}
 
+	/**
+	 * Constructeur de copie d'Etat,
+	 * copie les informations de l'Etat en paramËtre
+	 * @param etat - Etat ‡ copier
+	 */
 	public EtatP4(Etat etat) {
 		plateau = new String[HAUTEUR][LARGEUR];
 		String[][] cpy = etat.getPlateau();
@@ -35,6 +47,10 @@ public class EtatP4 implements Etat {
 		joueur = etat.getJoueur();
 	}
 
+	/**
+	 * Afffiche sur la sortie standard 
+	 * le plateau de Jeu
+	 */
 	public void afficherJeu() {
 		System.out.print("| ");
 		for (int c = 0; c < LARGEUR; c++) 
@@ -51,6 +67,10 @@ public class EtatP4 implements Etat {
 		}
 	}
 
+	/**
+	 * Demande ‡ l'utilisateur l'action de son choix
+	 * et retourne ensuite cette Action
+	 */
 	public Action demanderAction() {
 		int ligne = HAUTEUR - 1;
 		int colonne = LARGEUR -1;
@@ -63,12 +83,12 @@ public class EtatP4 implements Etat {
 			colonne = sc.nextInt();
 			colonne--;
 
-			// Veracit√© du coup
+			// VeracitÈ du coup
 			if (colonne < 0 || colonne >= LARGEUR) {
 				// On indique que le coup n'est pas possible
 				System.out.println("La colonne " + (colonne+1) + " n'existe pas !");
 			} else {
-				// si la case souhait√© n'est pas vide alors coup d√©j√† jou√©
+				// si la case souhait√© n'est pas vide alors coup dÈj‡ jouÈ
 				if (!this.plateau[HAUTEUR-1][colonne].equals(" ")) {
 					System.out.println("La colonne " + colonne + " est pleine !");
 				} else {
@@ -86,13 +106,17 @@ public class EtatP4 implements Etat {
 		return (new ActionP4(ligne, colonne));
 	}
 
+	/**
+	 * Indique si l'Etat this est un Etat terminal
+	 * c-‡-d : MATCHNUL ou ORDI_GAGNE ou HUMAIN_GAGNE
+	 */
 	public FinDePartie testFin() {
-		// tester si un joueur a gagn√©
+		// tester si un joueur a gagnÈ
 		int i, j, k, n = 0;
 		for ( i = 0; i < HAUTEUR; i++ ) {
 			for( j = 0; j < LARGEUR; j++ ) {
 				if (!this.plateau[i][j].equals(" ")) {
-					n++;	// nb coups jou√©s
+					n++;	// nb coups jouÈs
 
 					// lignes
 					k = 0;
@@ -132,7 +156,7 @@ public class EtatP4 implements Etat {
 	}
 
 	/**
-	 * Retourne le nombre d'actions possibles √† partir de l'Etat etat
+	 * Retourne le nombre d'actions possibles ‡† partir de l'Etat etat
 	 */
 	public List<Action> coups_possibles() {
 		List<Action> actions = new LinkedList<Action>();
@@ -175,6 +199,10 @@ public class EtatP4 implements Etat {
 		return plateau;
 	}
 
+	/**
+	 * Retourne le nombre d'Action possibles ‡ partir
+	 * de l'Etat this
+	 */
 	public int getNbCoups() {
 		if( nbCoups == -1 ) {
 			coups_possibles();
@@ -195,5 +223,14 @@ public class EtatP4 implements Etat {
 			this.joueur = (1 - this.joueur);
 			return true;
 		} 
+	}
+	
+	/***
+	 * Set un Etat de Test c-‡-d 3 'O' alignÈs
+	 */
+	public void setEtatTest() {
+		this.plateau[0][0] = "O";
+		this.plateau[0][1] = "O";
+		this.plateau[0][2] = "O";
 	}
 }

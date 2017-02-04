@@ -4,19 +4,23 @@ import java.util.List;
 
 public interface Etat {
 	
-	// CritÃ¨res de fin de partie
+	// Critères de fin de partie
 	public enum FinDePartie {NON, MATCHNUL, ORDI_GAGNE, HUMAIN_GAGNE};
 
 	public void afficherJeu();
+	public void setJoueur(int j);
+	public void setEtatTest();
+	
 	public Action demanderAction();
-	public FinDePartie testFin();
+	
 	public List<Action> coups_possibles();
+	public FinDePartie testFin();
+	
 	public boolean jouerAction(Action action);
 	
-	public void setJoueur(int j);
-	
 	public int getJoueur();
-	public String[][] getPlateau();
 	public int getNbCoups();
+	
+	public String[][] getPlateau();
 	
 }

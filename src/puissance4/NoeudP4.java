@@ -19,11 +19,23 @@ public class NoeudP4 implements Noeud {
 	private int simulations = 0;
 	private double victoires = 0.0;
 
+	/**
+	 * Constructeur de NoeudP4,
+	 * initialise l'Etat du Noeud, et sa liste d'enfant
+	 * @param e - Etat du noeud
+	 */
 	public NoeudP4(Etat e) {
 		etat = new EtatP4(e);
 		enfants = new LinkedList<Noeud> ();
 	}
 
+	/**
+	 * Constructeur de NoeudP4,
+	 * Affecte comme parent du Noeud le Noeud en paramètre p
+	 * et affecte l'Action a comme étant l'Action du Noeud
+	 * @param p - Noeud parent
+	 * @param a - Action a affecté au Noeud
+	 */
 	public NoeudP4(Noeud p, Action a) {
 		parent = p;
 		enfants = new LinkedList<Noeud> ();
@@ -40,7 +52,7 @@ public class NoeudP4 implements Noeud {
 	}
 
 	/**
-	 * Indique s'il reste des actions possibles Ã  effectuÃ©es
+	 * Indique s'il reste des actions possibles à  effectuées
 	 * Ã  partir du Noeud this
 	 */
 	public boolean resteAction() {
@@ -55,7 +67,7 @@ public class NoeudP4 implements Noeud {
 	}
 
 	/**
-	 * Retourne le nombre d'actions possibles Ã  partir de l'Etat etat
+	 * Retourne le nombre d'actions possibles à  partir de l'Etat etat
 	 */
 	public List<Action> actionsPossible() {
 		List<Action> all = etat.coups_possibles();
@@ -91,7 +103,7 @@ public class NoeudP4 implements Noeud {
 	}
 
 	/**
-	 * Retourne l'Action liÃ©e au Noeud
+	 * Retourne l'Action liée au Noeud
 	 */
 	public Action getAction() {
 		return action;
@@ -182,8 +194,12 @@ public class NoeudP4 implements Noeud {
 		victoires += recompense;
 	}
 
+	/**
+	 * Afffiche sur la sortie standard 
+	 * les statistiques du Noeud
+	 */
 	public void afficherStatistiques() {
-		System.out.println("Statistiques : \n");
+		System.out.println("Statistiques : ");
 		if( action != null ) {
 			System.out.println("\t-Action : " + action);
 		} else {
@@ -193,9 +209,14 @@ public class NoeudP4 implements Noeud {
 		System.out.println("\t-Nombre de simulation(s) : " + simulations);
 		System.out.println("\t-Nombre d'enfant(s) : " + enfants.size());
 		double pourcentage = (victoires / simulations) * 100.0 ;
-		System.out.println("\t-Pourcentage : " + pourcentage);
+		System.out.println("\t-Pourcentage : " + pourcentage + "\n");
 	}
 
+	/**
+	 * Choisit un Noeud enfant en respectant la 
+	 * stratégie robuste, on retournera donc le 
+	 * Noeud enfant avec le plus grand nombre de simulations
+	 */
 	public void robuste() {
 		int k = 0;
 		int maxi = Integer.MIN_VALUE;
@@ -212,6 +233,11 @@ public class NoeudP4 implements Noeud {
 		action = enfants.get(indice).getAction();
 	}
 
+	/**
+	 * Choisit un Noeud enfant en respectant la 
+	 * stratégie maxi, on retournera donc le 
+	 * Noeud enfant avec le plus grand nombre de victoires
+	 */
 	public void maxi() {
 		int k = 0;
 		double maxi = Integer.MIN_VALUE;

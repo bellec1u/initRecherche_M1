@@ -7,7 +7,6 @@ public class Configuration {
 	private final int TEMPS = 1000; // 1000 ms
 	
 	private Configuration() {
-		
 	}
 	
 	public static Configuration getInstance() {

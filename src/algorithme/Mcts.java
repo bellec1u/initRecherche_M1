@@ -17,6 +17,7 @@ import arbre.Noeud;
 public class Mcts implements Algorithme{
 
 	private FormuleSelection formule;
+	
 	private final Random random = new Random();
 
 	public Mcts(FormuleSelection form) {
@@ -26,7 +27,7 @@ public class Mcts implements Algorithme{
 	public Noeud executer(Noeud noeud) {
 		Noeud meilleurChoix = selectionner(noeud);
 
-		/* 3. On simule la fin de partie avec une dÃ©marche alÃ©atoire */
+		/* 3. On simule la fin de partie avec une démarche aléatoire */
 		meilleurChoix = simuler(meilleurChoix);
 
 		/* 4. On mets a jour le meilleur enfant */

@@ -3,7 +3,8 @@ package main;
 import java.util.Scanner;
 
 import config.Configuration;
-
+import config.GameFactory;
+import config.Puissance4Factory;
 import puissance4.EtatP4;
 import puissance4.NoeudP4;
 import algorithme.FormuleSelection;
@@ -22,6 +23,8 @@ import arbre.Noeud;
  */
 public class Main {
 
+	private final static GameFactory GAME = new Puissance4Factory();
+	
 	public static void main(String[] args) {
 
 		// verification des donnees en parametre
@@ -51,12 +54,13 @@ public class Main {
 				correct = true;
 				joueur = Integer.parseInt(res);
 			} else {
-				System.out.println("Entr√©es valides : 0 ou 1 !");
+				System.out.println("EntrÈes valides : 0 ou 1 !");
 			}
 		} while (!correct);
 		
-		etat = new EtatP4(joueur);
-		System.out.println("Temps de r√©flexion de l'ordinateur : " + Configuration.getInstance().getTemps());
+		etat = GAME.getEtat(joueur);
+		
+		System.out.println("Temps de rÈflexion de l'ordinateur : " + Configuration.getInstance().getTemps());
 
 		// boucle de jeu
 		do {
@@ -79,7 +83,7 @@ public class Main {
 		etat.afficherJeu();
 		
 		if (fin == FinDePartie.ORDI_GAGNE) {
-			System.out.println("** L'ordinateur a gagn√© **");
+			System.out.println("** L'ordinateur a gagnÈ **");
 		} else if (fin == FinDePartie.MATCHNUL) {
 			System.out.println("** Match nul ! **");
 		} else {
@@ -90,37 +94,43 @@ public class Main {
 	private static void ordijoue_mcts(Etat etat, int temps, boolean strategie) {
 		long tic, toc;
 
-		// Cr√©er l'arbre de recherche
+		// Creer l'arbre de recherche
 		Noeud racine = new NoeudP4(etat);
 
 		FormuleSelection uct = new Uct();
 		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
 		
-		// pre rempli d√©j√† l'arbre
+		// pre rempli dÈj‡† l'arbre
 
 		// S'il y  a plusieurs fils alors on execute l'algo MCTS UCT
 		int iter = 0;
 		tic = System.currentTimeMillis();
 		do {
 			/*
-		    	L'algo se decompose en 4 √©tapes :
-		    	- Selection √† partir de l'etat du meileur fils
-		    	- Developpement d'un Noeud fils choisit al√©atoirement (et non d√©j√† d√©velopp√©)
-		    	- Simulation de la fin de la partie avec une marche al√©atoire
-		    	- Mise √† jours des valeurs des Noeuds dans l'arbre, on remonte la valeur de r√©compense
-		    	du Noeud terminal √† la racine.
+		    	L'algo se decompose en 4 Ètapes :
+		    	- Selection ‡† partir de l'etat du meileur fils
+		    	- Developpement d'un Noeud fils choisit alÈatoirement (et non dÈj‡† dÈveloppÈ)
+		    	- Simulation de la fin de la partie avec une marche alÈatoire
+		    	- Mise ‡† jours des valeurs des Noeuds dans l'arbre, on remonte la valeur de rÈcompense
+		    	du Noeud terminal ‡† la racine.
 			 */
 			racine = mcts.executer(racine);
 			toc = System.currentTimeMillis();
 			iter++;
 		} while (toc < (tic + temps));
-		System.out.println("It√©rations effectu√©es : " + iter);
+		System.out.println("ItÈrations effectuÈes : " + iter);
 		
 		/* 
 		 * fin de l'algorithme		
-		 * On choisit la bonne strategie demand√©e par l'utilisateur
+		 * On choisit la bonne strategie demandÈe par l'utilisateur
 		 */
-		racine.robuste();
+		if ( strategie ) {
+			System.out.println("(STRATEGIE ROBUSTE)");
+			racine.robuste();
+		} else {
+			System.out.println("(STRATEGIE MAXI)");
+			racine.maxi();
+		}
 		System.out.println("Action choisit : " + racine.getAction());
 		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
 			racine.retournerEnfant(i).afficherStatistiques();
