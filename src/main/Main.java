@@ -26,69 +26,124 @@ public class Main {
 	private final static GameFactory GAME = new Puissance4Factory();
 	
 	public static void main(String[] args) {
-
+		jeuOrdiOrdi(args);
+		//jeuJoueurOrdi(args);
+	}
+	
+	public static void jeuOrdiOrdi(String[] args) {
 		// verification des donnees en parametre
-		if (args.length != 1) {
-			System.err.println("#usage : ./jeu <strategie> avec strategie = r (robuste) ou m (maxi)");
-			return;
-		}
+				if (args.length != 1) {
+					System.err.println("#usage : ./jeu <strategie> avec strategie = r (robuste) ou m (maxi)");
+					return;
+				}
 
-		// recuperation des donnees
-		boolean robusteOuMaxi = (args[0].equals("r")) ? true : false;
+				// recuperation des donnees
+				boolean robusteOuMaxi = (args[0].equals("r")) ? true : false;
 
-		Action coup;
-		FinDePartie fin = FinDePartie.NON;
+				Action coup;
+				FinDePartie fin = FinDePartie.NON;
 
-		// initialisation
-		Etat etat = null;
+				// initialisation
+				Etat etat = null;
+				
+				etat = GAME.getEtat(1);
+				
+				System.out.println("Temps de rï¿½flexion de l'ordinateur : " + Configuration.getInstance().getTemps());
 
-		// choix j1
-		boolean correct = false;
-		@SuppressWarnings("resource")
-		Scanner sc = new Scanner(System.in);
-		int joueur = 0;
-		do {
-			System.out.println("Qui commence ? (0 : humain, 1 : ordinateur)");
-			String res = sc.nextLine();
-			if (res.equals("0") || res.equals("1")) {
-				correct = true;
-				joueur = Integer.parseInt(res);
-			} else {
-				System.out.println("Entrées valides : 0 ou 1 !");
-			}
-		} while (!correct);
-		
-		etat = GAME.getEtat(joueur);
-		
-		System.out.println("Temps de réflexion de l'ordinateur : " + Configuration.getInstance().getTemps());
-
-		// boucle de jeu
-		do {
-			System.out.println(" ");
-			etat.afficherJeu();
-			if (etat.getJoueur() == 0) {
-				// tour de l'humain
+				// boucle de jeu
 				do {
-					coup = etat.demanderAction();
-				} while(!etat.jouerAction(coup));
-			} else {
-				// tour de l'ordinateur
-				ordijoue_mcts(etat, Configuration.getInstance().getTemps(), robusteOuMaxi);
-			}
-			fin = etat.testFin();
-		} while (fin == FinDePartie.NON);
-		
-		System.out.println(" ");
-		
-		etat.afficherJeu();
-		
-		if (fin == FinDePartie.ORDI_GAGNE) {
-			System.out.println("** L'ordinateur a gagné **");
-		} else if (fin == FinDePartie.MATCHNUL) {
-			System.out.println("** Match nul ! **");
-		} else {
-			System.out.println("** BRAVO, l'ordinateur a perdu **");
-		}
+					System.out.println(" ");
+					etat.afficherJeu();
+					
+						
+						ordijoue_mcts(etat, Configuration.getInstance().getTemps(), robusteOuMaxi);
+						etat.setJoueur(1);
+						etat.inverserGrille();						
+				
+					fin = etat.testFin();
+				} while (fin == FinDePartie.NON);
+				
+				System.out.println(" ");
+				
+				etat.afficherJeu();
+				
+				if (fin == FinDePartie.ORDI_GAGNE) {
+					System.out.println("** L'ordinateur a gagnï¿½ **");
+				} else if (fin == FinDePartie.MATCHNUL) {
+					System.out.println("** Match nul ! **");
+				} else {
+					System.out.println("** BRAVO, l'ordinateur a perdu **");
+				}
+	}	
+	
+	
+	
+	
+	
+	
+	public static void jeuJoueurOrdi(String[] args) {
+		// verification des donnees en parametre
+				if (args.length != 1) {
+					System.err.println("#usage : ./jeu <strategie> avec strategie = r (robuste) ou m (maxi)");
+					return;
+				}
+
+				// recuperation des donnees
+				boolean robusteOuMaxi = (args[0].equals("r")) ? true : false;
+
+				Action coup;
+				FinDePartie fin = FinDePartie.NON;
+
+				// initialisation
+				Etat etat = null;
+
+				// choix j1
+				boolean correct = false;
+				@SuppressWarnings("resource")
+				Scanner sc = new Scanner(System.in);
+				int joueur = 0;
+				do {
+					System.out.println("Qui commence ? (0 : humain, 1 : ordinateur)");
+					String res = sc.nextLine();
+					if (res.equals("0") || res.equals("1")) {
+						correct = true;
+						joueur = Integer.parseInt(res);
+					} else {
+						System.out.println("Entrï¿½es valides : 0 ou 1 !");
+					}
+				} while (!correct);
+				
+				etat = GAME.getEtat(joueur);
+				
+				System.out.println("Temps de rï¿½flexion de l'ordinateur : " + Configuration.getInstance().getTemps());
+
+				// boucle de jeu
+				do {
+					System.out.println(" ");
+					etat.afficherJeu();
+					if (etat.getJoueur() == 0) {
+						// tour de l'humain
+						do {
+							coup = etat.demanderAction();
+						} while(!etat.jouerAction(coup));
+					} else {
+						// tour de l'ordinateur
+						ordijoue_mcts(etat, Configuration.getInstance().getTemps(), robusteOuMaxi);
+					}
+					fin = etat.testFin();
+				} while (fin == FinDePartie.NON);
+				
+				System.out.println(" ");
+				
+				etat.afficherJeu();
+				
+				if (fin == FinDePartie.ORDI_GAGNE) {
+					System.out.println("** L'ordinateur a gagnï¿½ **");
+				} else if (fin == FinDePartie.MATCHNUL) {
+					System.out.println("** Match nul ! **");
+				} else {
+					System.out.println("** BRAVO, l'ordinateur a perdu **");
+				}
 	}
 
 	private static void ordijoue_mcts(Etat etat, int temps, boolean strategie) {
@@ -100,29 +155,29 @@ public class Main {
 		FormuleSelection uct = new Uct();
 		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
 		
-		// pre rempli déjà  l'arbre
+		// pre rempli dï¿½jï¿½ l'arbre
 
 		// S'il y  a plusieurs fils alors on execute l'algo MCTS UCT
 		int iter = 0;
 		tic = System.currentTimeMillis();
 		do {
 			/*
-		    	L'algo se decompose en 4 étapes :
-		    	- Selection à  partir de l'etat du meileur fils
-		    	- Developpement d'un Noeud fils choisit aléatoirement (et non déjà  développé)
-		    	- Simulation de la fin de la partie avec une marche aléatoire
-		    	- Mise à  jours des valeurs des Noeuds dans l'arbre, on remonte la valeur de récompense
-		    	du Noeud terminal à  la racine.
+		    	L'algo se decompose en 4 ï¿½tapes :
+		    	- Selection ï¿½ partir de l'etat du meileur fils
+		    	- Developpement d'un Noeud fils choisit alï¿½atoirement (et non dï¿½jï¿½ dï¿½veloppï¿½)
+		    	- Simulation de la fin de la partie avec une marche alï¿½atoire
+		    	- Mise ï¿½ jours des valeurs des Noeuds dans l'arbre, on remonte la valeur de rï¿½compense
+		    	du Noeud terminal ï¿½ la racine.
 			 */
 			racine = mcts.executer(racine);
 			toc = System.currentTimeMillis();
 			iter++;
 		} while (toc < (tic + temps));
-		System.out.println("Itérations effectuées : " + iter);
+		System.out.println("Itï¿½rations effectuï¿½es : " + iter);
 		
 		/* 
 		 * fin de l'algorithme		
-		 * On choisit la bonne strategie demandée par l'utilisateur
+		 * On choisit la bonne strategie demandï¿½e par l'utilisateur
 		 */
 		if ( strategie ) {
 			System.out.println("(STRATEGIE ROBUSTE)");
@@ -131,10 +186,12 @@ public class Main {
 			System.out.println("(STRATEGIE MAXI)");
 			racine.maxi();
 		}
+		/*
 		System.out.println("Action choisit : " + racine.getAction());
 		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
 			racine.retournerEnfant(i).afficherStatistiques();
 		}
+		*/
 		etat.jouerAction(racine.getAction());
 	}
 

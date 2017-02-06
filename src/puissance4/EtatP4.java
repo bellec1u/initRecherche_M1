@@ -17,8 +17,8 @@ public class EtatP4 implements Etat {
 	/***
 	 * Constructeur d'EtatP4,
 	 * ce constructeur initialise le plateau
-	 * de Jeu à vide partout,
-	 * et set le joueur à 'j'
+	 * de Jeu ï¿½ vide partout,
+	 * et set le joueur ï¿½ 'j'
 	 * @param j - Le joueur
 	 */
 	public EtatP4(int j) {
@@ -33,8 +33,8 @@ public class EtatP4 implements Etat {
 
 	/**
 	 * Constructeur de copie d'Etat,
-	 * copie les informations de l'Etat en paramètre
-	 * @param etat - Etat à copier
+	 * copie les informations de l'Etat en paramï¿½tre
+	 * @param etat - Etat ï¿½ copier
 	 */
 	public EtatP4(Etat etat) {
 		plateau = new String[HAUTEUR][LARGEUR];
@@ -68,7 +68,7 @@ public class EtatP4 implements Etat {
 	}
 
 	/**
-	 * Demande à l'utilisateur l'action de son choix
+	 * Demande ï¿½ l'utilisateur l'action de son choix
 	 * et retourne ensuite cette Action
 	 */
 	public Action demanderAction() {
@@ -83,12 +83,12 @@ public class EtatP4 implements Etat {
 			colonne = sc.nextInt();
 			colonne--;
 
-			// Veracité du coup
+			// Veracitï¿½ du coup
 			if (colonne < 0 || colonne >= LARGEUR) {
 				// On indique que le coup n'est pas possible
 				System.out.println("La colonne " + (colonne+1) + " n'existe pas !");
 			} else {
-				// si la case souhaitÃ© n'est pas vide alors coup déjà joué
+				// si la case souhaitÃ© n'est pas vide alors coup dï¿½jï¿½ jouï¿½
 				if (!this.plateau[HAUTEUR-1][colonne].equals(" ")) {
 					System.out.println("La colonne " + colonne + " est pleine !");
 				} else {
@@ -108,15 +108,15 @@ public class EtatP4 implements Etat {
 
 	/**
 	 * Indique si l'Etat this est un Etat terminal
-	 * c-à-d : MATCHNUL ou ORDI_GAGNE ou HUMAIN_GAGNE
+	 * c-ï¿½-d : MATCHNUL ou ORDI_GAGNE ou HUMAIN_GAGNE
 	 */
 	public FinDePartie testFin() {
-		// tester si un joueur a gagné
+		// tester si un joueur a gagnï¿½
 		int i, j, k, n = 0;
 		for ( i = 0; i < HAUTEUR; i++ ) {
 			for( j = 0; j < LARGEUR; j++ ) {
 				if (!this.plateau[i][j].equals(" ")) {
-					n++;	// nb coups joués
+					n++;	// nb coups jouï¿½s
 
 					// lignes
 					k = 0;
@@ -156,7 +156,7 @@ public class EtatP4 implements Etat {
 	}
 
 	/**
-	 * Retourne le nombre d'actions possibles à  partir de l'Etat etat
+	 * Retourne le nombre d'actions possibles ï¿½ partir de l'Etat etat
 	 */
 	public List<Action> coups_possibles() {
 		List<Action> actions = new LinkedList<Action>();
@@ -200,7 +200,7 @@ public class EtatP4 implements Etat {
 	}
 
 	/**
-	 * Retourne le nombre d'Action possibles à partir
+	 * Retourne le nombre d'Action possibles ï¿½ partir
 	 * de l'Etat this
 	 */
 	public int getNbCoups() {
@@ -226,11 +226,23 @@ public class EtatP4 implements Etat {
 	}
 	
 	/***
-	 * Set un Etat de Test c-à-d 3 'O' alignés
+	 * Set un Etat de Test c-ï¿½-d 3 'O' alignï¿½s
 	 */
 	public void setEtatTest() {
 		this.plateau[0][0] = "O";
 		this.plateau[0][1] = "O";
 		this.plateau[0][2] = "O";
+	}
+
+	public void inverserGrille() {
+		for(int i = 0 ; i < HAUTEUR ; i++) {
+			for( int j = 0 ; j < LARGEUR ; j++) {
+				if (plateau[i][j].equals("X")) {
+					plateau[i][j] = "O";
+				} else if (plateau[i][j].equals("O")) {
+					plateau[i][j] = "X";
+				}
+			}
+		}		
 	}
 }
