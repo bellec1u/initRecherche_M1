@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Etat {
 	
-	// Crit�res de fin de partie
+	// Critéres de fin de partie
 	public enum FinDePartie {NON, MATCHNUL, ORDI_GAGNE, HUMAIN_GAGNE};
 
 	public void afficherJeu();
@@ -22,6 +22,5 @@ public interface Etat {
 	public int getNbCoups();
 	
 	public String[][] getPlateau();
-	public void inverserGrille();
 	
 }

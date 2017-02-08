@@ -25,7 +25,7 @@ public class ActionP4 implements Action {
 	}
 	
 	/**
-	 * Indique si l'Action tis est considérée comme gagnante 
+	 * Indique si l'Action tis est considï¿½rï¿½e comme gagnante 
 	 * dans l'Etat etat
 	 */
 	public boolean estGagnante(Etat etat) {
@@ -47,7 +47,7 @@ public class ActionP4 implements Action {
 	}
 
 	/**
-	 * Test si 2 Actions sont égales
+	 * Test si 2 Actions sont Ã©gales
 	 */
 	@Override
 	public boolean equals(Object obj) {

@@ -27,7 +27,7 @@ public class Mcts implements Algorithme{
 	public Noeud executer(Noeud noeud) {
 		Noeud meilleurChoix = selectionner(noeud);
 
-		/* 3. On simule la fin de partie avec une démarche aléatoire */
+		/* 3. On simule la fin de partie avec une dÃ©marche alÃ©atoire */
 		meilleurChoix = simuler(meilleurChoix);
 
 		/* 4. On mets a jour le meilleur enfant */

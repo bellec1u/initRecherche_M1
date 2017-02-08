@@ -33,8 +33,8 @@ public class EtatP4 implements Etat {
 
 	/**
 	 * Constructeur de copie d'Etat,
-	 * copie les informations de l'Etat en param�tre
-	 * @param etat - Etat � copier
+	 * copie les informations de l'Etat en paramétre
+	 * @param etat - Etat à copier
 	 */
 	public EtatP4(Etat etat) {
 		plateau = new String[HAUTEUR][LARGEUR];
