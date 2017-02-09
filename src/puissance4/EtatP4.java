@@ -251,15 +251,11 @@ public class EtatP4 implements Etat, Cloneable {
 		actions.remove(action);
 	}
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-	
 	public Etat cloneable() {
 		Etat cpy = null;	
 		try {
-			cpy = (Etat)clone();
+			cpy = (Etat) super.clone();
+			cpy.setJoueur( 1 - cpy.getJoueur() );
 		} catch (CloneNotSupportedException e) {
 			System.err.println(e.getMessage());
 		}

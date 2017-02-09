@@ -8,7 +8,9 @@ import config.Puissance4Factory;
 import puissance4.EtatP4;
 import puissance4.NoeudP4;
 import algorithme.FormuleSelection;
+import algorithme.Maxi;
 import algorithme.Mcts;
+import algorithme.Robuste;
 import algorithme.Uct;
 import arbre.Action;
 import arbre.Etat;
@@ -156,7 +158,6 @@ public class Main {
 
 	private static void ordijoue_mcts(Etat etat, int temps, boolean strategie) {
 		long tic, toc;
-
 		// Creer l'arbre de recherche
 		Noeud racine = new NoeudP4(etat);
 
@@ -187,19 +188,21 @@ public class Main {
 		 * fin de l'algorithme		
 		 * On choisit la bonne strategie demandée par l'utilisateur
 		 */
+		FormuleSelection select = null;
 		if ( strategie ) {
+			select = new Robuste();
 			System.out.println("(STRATEGIE ROBUSTE)");
-			racine.robuste();
 		} else {
+			select = new Maxi();
 			System.out.println("(STRATEGIE MAXI)");
-			racine.maxi();
 		}
-		/*
+		racine = select.selectionner(racine);
+		
 		System.out.println("Action choisit : " + racine.getAction());
 		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
 			racine.retournerEnfant(i).afficherStatistiques();
 		}
-		 */
+		 
 		etat.jouerAction(racine.getAction());
 	}
 

@@ -249,4 +249,9 @@ public class NoeudP4 implements Noeud {
 		}
 		action = enfants.get(indice).getAction();
 	}
+	
+	public Noeud setAction(Action action) {
+		this.action = action;
+		return this;
+	}
 }

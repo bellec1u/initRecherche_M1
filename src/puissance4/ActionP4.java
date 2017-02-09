@@ -29,7 +29,9 @@ public class ActionP4 implements Action {
 	 * dans l'Etat etat
 	 */
 	public boolean estGagnante(Etat etat) {
-		Etat e = etat.cloneable();
+		/*Etat e = etat.cloneable();
+		e.jouerAction(this);*/
+		Etat e = new EtatP4(etat);
 		e.jouerAction(this);
 		return (e.testFin() == FinDePartie.ORDI_GAGNE);
 	}

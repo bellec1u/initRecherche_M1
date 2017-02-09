@@ -39,4 +39,6 @@ public interface Noeud {
 	public void afficherStatistiques();
 	public void robuste();
 	public void maxi();
+	public Noeud setAction(Action action);
+	
 }
