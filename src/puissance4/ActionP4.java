@@ -25,11 +25,13 @@ public class ActionP4 implements Action {
 	}
 	
 	/**
-	 * Indique si l'Action tis est consid�r�e comme gagnante 
+	 * Indique si l'Action tis est considérée comme gagnante 
 	 * dans l'Etat etat
 	 */
 	public boolean estGagnante(Etat etat) {
-		return (etat.testFin() == FinDePartie.ORDI_GAGNE);
+		Etat e = etat.cloneable();
+		e.jouerAction(this);
+		return (e.testFin() == FinDePartie.ORDI_GAGNE);
 	}
 	
 	/**
@@ -61,7 +63,5 @@ public class ActionP4 implements Action {
 	@Override
 	public String toString() {
 		return "(" + (ligne + 1) + ", " + (colonne + 1) + ")";
-	}
-	
-
+	}	
 }

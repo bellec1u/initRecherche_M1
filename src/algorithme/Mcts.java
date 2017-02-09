@@ -56,6 +56,7 @@ public class Mcts implements Algorithme{
 		List<Action> actions = noeud.actionsPossible();
 		for (Action a : actions) {
 			if ( a.estGagnante( noeud.getEtat() ) ) {
+				noeud.getEtat().afficherJeu();
 				return noeud.ajouterEnfant(a);
 			}
 		}

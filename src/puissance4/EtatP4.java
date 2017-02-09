@@ -7,12 +7,12 @@ import java.util.Scanner;
 import arbre.Action;
 import arbre.Etat;
 
-public class EtatP4 implements Etat {
-
-	private int nbCoups = -1;
+public class EtatP4 implements Etat, Cloneable {
+	
 	private String[][] plateau;
 	private final int HAUTEUR = 6, LARGEUR = 7, PUISSANCE = 4;
 	private int joueur = -1;
+	private List<Action> actions = null;
 
 	/***
 	 * Constructeur d'EtatP4,
@@ -44,7 +44,7 @@ public class EtatP4 implements Etat {
 				this.plateau[i][j] = cpy[i][j];
 			}
 		}
-		joueur = etat.getJoueur();
+		joueur =  etat.getJoueur();
 	}
 
 	/**
@@ -156,25 +156,26 @@ public class EtatP4 implements Etat {
 	}
 
 	/**
-	 * Retourne le nombre d'actions possibles � partir de l'Etat etat
+	 * Retourne le nombre d'actions possibles à partir de l'Etat etat
 	 */
 	public List<Action> coups_possibles() {
-		List<Action> actions = new LinkedList<Action>();
-		// pour chaque colonnes
-		for (int i = 0; i < LARGEUR ; i++) {
-			boolean trouve = false;
-			int j = 0;
-			// pour chaque lignes != " "
-			while (!trouve && j < HAUTEUR ) {
-				if (plateau[j][i].equals(" ")) {
-					trouve = true;
-					actions.add(new ActionP4(j,i));
-				} else {
-					j++;
+		if (actions == null) {
+			actions = new LinkedList<Action>();
+			// pour chaque colonnes
+			for (int i = 0; i < LARGEUR ; i++) {
+				boolean trouve = false;
+				int j = 0;
+				// pour chaque lignes != " "
+				while (!trouve && j < HAUTEUR ) {
+					if (plateau[j][i].equals(" ")) {
+						trouve = true;
+						actions.add(new ActionP4(j,i));
+					} else {
+						j++;
+					}
 				}
-			}
-		}	
-		nbCoups = actions.size();		
+			}	
+		}
 		return actions;
 	}
 
@@ -204,10 +205,10 @@ public class EtatP4 implements Etat {
 	 * de l'Etat this
 	 */
 	public int getNbCoups() {
-		if( nbCoups == -1 ) {
+		if( actions == null ) {
 			coups_possibles();
 		}
-		return nbCoups;
+		return actions.size();
 	}
 
 	/**
@@ -224,7 +225,7 @@ public class EtatP4 implements Etat {
 			return true;
 		} 
 	}
-	
+
 	/***
 	 * Set un Etat de Test c-�-d 3 'O' align�s
 	 */
@@ -244,5 +245,25 @@ public class EtatP4 implements Etat {
 				}
 			}
 		}		
+	}
+
+	public void supprimerAction(Action action) {
+		actions.remove(action);
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+	
+	public Etat cloneable() {
+		Etat cpy = null;	
+		try {
+			cpy = (Etat)clone();
+		} catch (CloneNotSupportedException e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return cpy;
 	}
 }

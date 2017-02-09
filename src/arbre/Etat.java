@@ -10,6 +10,7 @@ public interface Etat {
 	public void afficherJeu();
 	public void setJoueur(int j);
 	public void setEtatTest();
+	public void supprimerAction(Action action);
 	
 	public Action demanderAction();
 	
@@ -22,5 +23,7 @@ public interface Etat {
 	public int getNbCoups();
 	
 	public String[][] getPlateau();
+	
+	public Etat cloneable();
 	
 }

@@ -56,7 +56,7 @@ public class NoeudP4 implements Noeud {
 	 * à partir du Noeud this
 	 */
 	public boolean resteAction() {
-		return ( enfants.size() != etat.getNbCoups() );
+		return ( etat.getNbCoups() != 0);
 	}
 
 	/**
@@ -70,12 +70,7 @@ public class NoeudP4 implements Noeud {
 	 * Retourne le nombre d'actions possibles à partir de l'Etat etat
 	 */
 	public List<Action> actionsPossible() {
-		List<Action> all = etat.coups_possibles();
-		for(int i = 0 ; i < enfants.size() ; i++) {
-			Noeud enfant = enfants.get(i);
-			all.remove(enfant.getAction());
-		}
-		return all;
+		return etat.coups_possibles();
 	}
 
 	/**
@@ -84,6 +79,7 @@ public class NoeudP4 implements Noeud {
 	 */
 	public Noeud ajouterEnfant(Action action) {
 		Noeud enfant = new NoeudP4(this, action);
+		etat.supprimerAction(action);
 		enfants.add(enfant);
 		return enfant;
 	}

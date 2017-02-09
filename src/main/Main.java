@@ -26,8 +26,8 @@ public class Main {
 	private final static GameFactory GAME = new Puissance4Factory();
 
 	public static void main(String[] args) {
-		jeuOrdiOrdi(args);
-		//jeuJoueurOrdi(args);
+		//jeuOrdiOrdi(args);
+		jeuJoueurOrdi(args);
 	}
 
 	public static void jeuOrdiOrdi(String[] args) {
