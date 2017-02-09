@@ -6,6 +6,7 @@ package algorithme;
 import java.util.List;
 import java.util.Random;
 
+import algorithme.formule.FormuleSelection;
 import arbre.Action;
 import arbre.Noeud;
 

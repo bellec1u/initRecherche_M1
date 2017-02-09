@@ -7,11 +7,11 @@ import config.GameFactory;
 import config.Puissance4Factory;
 import puissance4.EtatP4;
 import puissance4.NoeudP4;
-import algorithme.FormuleSelection;
-import algorithme.Maxi;
 import algorithme.Mcts;
-import algorithme.Robuste;
-import algorithme.Uct;
+import algorithme.formule.FormuleSelection;
+import algorithme.formule.Maxi;
+import algorithme.formule.Robuste;
+import algorithme.formule.Uct;
 import arbre.Action;
 import arbre.Etat;
 import arbre.Etat.FinDePartie;
@@ -28,8 +28,8 @@ public class Main {
 	private final static GameFactory GAME = new Puissance4Factory();
 
 	public static void main(String[] args) {
-		//jeuOrdiOrdi(args);
-		jeuJoueurOrdi(args);
+		jeuOrdiOrdi(args);
+		//jeuJoueurOrdi(args);
 	}
 
 	public static void jeuOrdiOrdi(String[] args) {
