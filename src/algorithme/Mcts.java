@@ -59,7 +59,7 @@ public class Mcts implements Algorithme{
 			/*
 			 * REVOIR 
 			 */
-			if ( a.estGagnante( noeud.getEtat() ) ) {
+			if ( a.estGagnante( noeud ) ) {
 				return noeud.ajouterEnfant(a);
 			}
 		}

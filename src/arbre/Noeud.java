@@ -32,13 +32,16 @@ public interface Noeud {
 	
 	public int retournerNbEnfant();
 	public int retournerNbSimulation();
-		
+	public int getInitialJoueur();
+	public int getMinOrMax();
+	
 	public void visiter(double recompense);
 	public void ajouterVisite(double recompense);
 	public void setStatistique(int s, double v);
+	public void setInitialJoueur(int joueur);
+	public void setMinOrMax(int minMax);
 	public void afficherStatistiques();
-	public void robuste();
-	public void maxi();
+
 	public Noeud setAction(Action action);
 	
 }

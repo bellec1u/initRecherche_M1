@@ -2,6 +2,7 @@ package puissance4;
 
 import arbre.Action;
 import arbre.Etat;
+import arbre.Noeud;
 import arbre.Etat.FinDePartie;
 
 
@@ -28,12 +29,16 @@ public class ActionP4 implements Action {
 	 * Indique si l'Action tis est considérée comme gagnante 
 	 * dans l'Etat etat
 	 */
-	public boolean estGagnante(Etat etat) {
+	public boolean estGagnante(Noeud noeud) {
 		/*Etat e = etat.cloneable();
 		e.jouerAction(this);*/
-		Etat e = new EtatP4(etat);
+		Etat e = new EtatP4( noeud.getEtat() );
 		e.jouerAction(this);
-		return (e.testFin() == FinDePartie.ORDI_GAGNE);
+		if( noeud.getInitialJoueur() == Etat.HUMAIN ) {
+			return (e.testFin() == FinDePartie.HUMAIN_GAGNE);			
+		} else {
+			return (e.testFin() == FinDePartie.ORDI_GAGNE);			
+		}
 	}
 	
 	/**

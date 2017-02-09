@@ -5,8 +5,6 @@ import java.util.Scanner;
 import config.Configuration;
 import config.GameFactory;
 import config.Puissance4Factory;
-import puissance4.EtatP4;
-import puissance4.NoeudP4;
 import algorithme.Mcts;
 import algorithme.formule.FormuleSelection;
 import algorithme.formule.Maxi;
@@ -26,72 +24,13 @@ import arbre.Noeud;
 public class Main {
 
 	private final static GameFactory GAME = new Puissance4Factory();
-
+	private final static long TEMPS = Configuration.getInstance().getTemps();
+	
 	public static void main(String[] args) {
-		jeuOrdiOrdi(args);
-		//jeuJoueurOrdi(args);
+		jouer(args);
 	}
 
-	public static void jeuOrdiOrdi(String[] args) {
-		// verification des donnees en parametre
-		if (args.length != 1) {
-			System.err.println("#usage : ./jeu <strategie> avec strategie = r (robuste) ou m (maxi)");
-			return;
-		}
-
-		// recuperation des donnees
-		boolean robusteOuMaxi = (args[0].equals("r")) ? true : false;
-
-		Action coup;
-		FinDePartie fin = FinDePartie.NON;
-
-		// initialisation
-		Etat etat = null;
-
-		etat = GAME.getEtat(1);
-
-		System.out.println("Temps de réflexion de l'ordinateur : " + Configuration.getInstance().getTemps());
-
-		// boucle de jeu
-		int x = 0;
-		do {
-			System.out.println(" ");
-			if (x == 0) {
-				etat.afficherJeu();
-				x++;
-			} else {
-				((EtatP4) etat).inverserGrille();
-				etat.afficherJeu();
-				((EtatP4) etat).inverserGrille();
-				x--;
-			}
-
-			ordijoue_mcts(etat, Configuration.getInstance().getTemps(), robusteOuMaxi);
-			etat.setJoueur(1);
-			((EtatP4) etat).inverserGrille();						
-
-			fin = etat.testFin();
-		} while (fin == FinDePartie.NON);
-
-		System.out.println(" ");
-
-		etat.afficherJeu();
-
-		if (fin == FinDePartie.ORDI_GAGNE) {
-			System.out.println("** L'ordinateur a gagné **");
-		} else if (fin == FinDePartie.MATCHNUL) {
-			System.out.println("** Match nul ! **");
-		} else {
-			System.out.println("** BRAVO, l'ordinateur a perdu **");
-		}
-	}	
-
-
-
-
-
-
-	public static void jeuJoueurOrdi(String[] args) {
+	public static void jouer(String[] args) {
 		// verification des donnees en parametre
 		if (args.length != 1) {
 			System.err.println("#usage : ./jeu <strategie> avec strategie = r (robuste) ou m (maxi)");
@@ -111,7 +50,7 @@ public class Main {
 		boolean correct = false;
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
-		int joueur = 0;
+		int joueur = Etat.HUMAIN;
 		do {
 			System.out.println("Qui commence ? (0 : humain, 1 : ordinateur)");
 			String res = sc.nextLine();
@@ -125,20 +64,21 @@ public class Main {
 
 		etat = GAME.getEtat(joueur);
 
-		System.out.println("Temps de réflexion de l'ordinateur : " + Configuration.getInstance().getTemps());
+		System.out.println("Temps de réflexion de l'ordinateur : " + (TEMPS / 1000) + "s");
 
 		// boucle de jeu
 		do {
 			System.out.println(" ");
 			etat.afficherJeu();
-			if (etat.getJoueur() == 0) {
+			if (etat.getJoueur() == Etat.HUMAIN) {
 				// tour de l'humain
-				do {
+				/*do {
 					coup = etat.demanderAction();
-				} while(!etat.jouerAction(coup));
+				} while(!etat.jouerAction(coup));*/
+				ordijoue_mcts(etat, TEMPS, robusteOuMaxi);
 			} else {
 				// tour de l'ordinateur
-				ordijoue_mcts(etat, Configuration.getInstance().getTemps(), robusteOuMaxi);
+				ordijoue_mcts(etat, TEMPS, robusteOuMaxi);
 			}
 			fin = etat.testFin();
 		} while (fin == FinDePartie.NON);
@@ -156,12 +96,13 @@ public class Main {
 		}
 	}
 
-	private static void ordijoue_mcts(Etat etat, int temps, boolean strategie) {
+	private static void ordijoue_mcts(Etat etat, long temps, boolean strategie) {
 		long tic, toc;
 		// Creer l'arbre de recherche
-		Noeud racine = new NoeudP4(etat);
+		Noeud racine = GAME.getNoeud(etat);
 
 		FormuleSelection uct = new Uct();
+		FormuleSelection select = null;
 		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
 
 		// pre rempli déjà l'arbre
@@ -188,7 +129,6 @@ public class Main {
 		 * fin de l'algorithme		
 		 * On choisit la bonne strategie demandée par l'utilisateur
 		 */
-		FormuleSelection select = null;
 		if ( strategie ) {
 			select = new Robuste();
 			System.out.println("(STRATEGIE ROBUSTE)");

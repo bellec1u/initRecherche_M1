@@ -16,8 +16,11 @@ public class NoeudP4 implements Noeud {
 	private Etat etat;
 	private List<Noeud> enfants;
 
+	private int minOrMax = 1; // min a la racine
 	private int simulations = 0;
 	private double victoires = 0.0;
+
+	private static int JOUEUR_INIT = Etat.ORDI;
 
 	/**
 	 * Constructeur de NoeudP4,
@@ -31,7 +34,7 @@ public class NoeudP4 implements Noeud {
 
 	/**
 	 * Constructeur de NoeudP4,
-	 * Affecte comme parent du Noeud le Noeud en param�tre p
+	 * Affecte comme parent du Noeud le Noeud en paramètre p
 	 * et affecte l'Action a comme étant l'Action du Noeud
 	 * @param p - Noeud parent
 	 * @param a - Action a affecté au Noeud
@@ -42,6 +45,13 @@ public class NoeudP4 implements Noeud {
 		action = a;
 		etat = new EtatP4(parent.getEtat());
 		etat.jouerAction(a);		
+	}
+
+	/**
+	 * Affecte une valeur de départ de JOUEUR
+	 */
+	public void setInitialJoueur(int joueur) {
+		JOUEUR_INIT = joueur;
 	}
 
 	/**
@@ -79,6 +89,7 @@ public class NoeudP4 implements Noeud {
 	 */
 	public Noeud ajouterEnfant(Action action) {
 		Noeud enfant = new NoeudP4(this, action);
+		enfant.setMinOrMax( (1 - getMinOrMax()) );
 		etat.supprimerAction(action);
 		enfants.add(enfant);
 		return enfant;
@@ -113,6 +124,13 @@ public class NoeudP4 implements Noeud {
 	}
 
 	/**
+	 * Retourne le joueur initial
+	 */
+	public int getInitialJoueur() {
+		return JOUEUR_INIT;
+	}
+
+	/**
 	 * Indique la recompense du Noeud, 
 	 * si c'est un Noeud HUMAIN_GAGNANT, ORDI_GAGNANT ETC...
 	 */
@@ -121,10 +139,18 @@ public class NoeudP4 implements Noeud {
 		double recomp = 0.0;
 		switch (res) {
 		case ORDI_GAGNE :
-			recomp = 1.0;
+			if ( JOUEUR_INIT == Etat.ORDI ) {		
+				recomp = 1.0;
+			} else {
+				recomp = 0.0;
+			}
 			break;
 		case HUMAIN_GAGNE :
-			recomp = 0.0;
+			if ( JOUEUR_INIT == Etat.HUMAIN ) {
+				recomp = 1.0;
+			} else {
+				recomp = 0.0;
+			}
 			break;
 		case MATCHNUL :
 			recomp = 0.5;
@@ -208,50 +234,20 @@ public class NoeudP4 implements Noeud {
 		System.out.println("\t-Pourcentage : " + pourcentage + "\n");
 	}
 
-	/**
-	 * Choisit un Noeud enfant en respectant la 
-	 * stratégie robuste, on retournera donc le 
-	 * Noeud enfant avec le plus grand nombre de simulations
-	 */
-	public void robuste() {
-		int k = 0;
-		int maxi = Integer.MIN_VALUE;
-		int indice = 0;
-		int value = 0;
-		while(k < enfants.size() ) {
-			value = this.enfants.get(k).retournerNbSimulation();
-			if (value > maxi) {
-				maxi = value;
-				indice = k;
-			}
-			k++;
-		}
-		action = enfants.get(indice).getAction();
-	}
-
-	/**
-	 * Choisit un Noeud enfant en respectant la 
-	 * stratégie maxi, on retournera donc le 
-	 * Noeud enfant avec le plus grand nombre de victoires
-	 */
-	public void maxi() {
-		int k = 0;
-		double maxi = Integer.MIN_VALUE;
-		int indice = 0;
-		double value = 0;
-		while(k < enfants.size() ) {
-			value = this.enfants.get(k).retournerNbVictoire();
-			if( value > maxi) {
-				maxi = value;
-				indice = k;
-			}
-			k++;
-		}
-		action = enfants.get(indice).getAction();
-	}
-	
 	public Noeud setAction(Action action) {
 		this.action = action;
 		return this;
+	}
+
+	public void setMinOrMax(int minMax) {
+		minOrMax = minMax;
+	}
+	
+	/**
+	 * Retourne 1 si le noeud est un Noeud MIN
+	 * retourne 0 sinon;
+	 */
+	public int getMinOrMax() {
+		return minOrMax;
 	}
 }
