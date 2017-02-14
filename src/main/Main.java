@@ -2,9 +2,6 @@ package main;
 
 import java.util.Scanner;
 
-import config.Configuration;
-import config.GameFactory;
-import config.Puissance4Factory;
 import algorithme.Mcts;
 import algorithme.formule.FormuleSelection;
 import algorithme.formule.Maxi;
@@ -14,6 +11,9 @@ import arbre.Action;
 import arbre.Etat;
 import arbre.Etat.FinDePartie;
 import arbre.Noeud;
+import config.Configuration;
+import config.GameFactory;
+import config.Puissance4Factory;
 
 
 /**
@@ -38,7 +38,7 @@ public class Main {
 		}
 
 		// recuperation des donnees
-		boolean robusteOuMaxi = (args[0].equals("r")) ? true : false;
+		FormuleSelection robusteOuMaxi = (args[0].equals("r")) ? new Robuste() : new Maxi();
 
 		Action coup;
 		FinDePartie fin = FinDePartie.NON;
@@ -72,10 +72,10 @@ public class Main {
 			etat.afficherJeu();
 			if (etat.getJoueur() == Etat.HUMAIN) {
 				// tour de l'humain
-				/*do {
+				do {
 					coup = etat.demanderAction();
-				} while(!etat.jouerAction(coup));*/
-				ordijoue_mcts(etat, TEMPS, robusteOuMaxi);
+				} while(!etat.jouerAction(coup));
+				//ordijoue_mcts(etat, TEMPS, robusteOuMaxi);
 			} else {
 				// tour de l'ordinateur
 				ordijoue_mcts(etat, TEMPS, robusteOuMaxi);
@@ -96,13 +96,12 @@ public class Main {
 		}
 	}
 
-	private static void ordijoue_mcts(Etat etat, long temps, boolean strategie) {
+	private static void ordijoue_mcts(Etat etat, long temps, FormuleSelection strategie) {
 		long tic, toc;
 		// Creer l'arbre de recherche
 		Noeud racine = GAME.getNoeud(etat);
 
 		FormuleSelection uct = new Uct();
-		FormuleSelection select = null;
 		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
 
 		// pre rempli déjà l'arbre
@@ -129,14 +128,7 @@ public class Main {
 		 * fin de l'algorithme		
 		 * On choisit la bonne strategie demandée par l'utilisateur
 		 */
-		if ( strategie ) {
-			select = new Robuste();
-			System.out.println("(STRATEGIE ROBUSTE)");
-		} else {
-			select = new Maxi();
-			System.out.println("(STRATEGIE MAXI)");
-		}
-		racine = select.selectionner(racine);
+		racine = strategie.selectionner(racine);
 		
 		System.out.println("Action choisit : " + racine.getAction());
 		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
