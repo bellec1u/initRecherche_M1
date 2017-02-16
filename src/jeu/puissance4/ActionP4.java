@@ -1,4 +1,4 @@
-package puissance4;
+package jeu.puissance4;
 
 import arbre.Action;
 import arbre.Etat;

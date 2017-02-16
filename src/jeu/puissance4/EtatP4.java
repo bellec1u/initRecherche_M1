@@ -1,4 +1,4 @@
-package puissance4;
+package jeu.puissance4;
 
 import java.util.LinkedList;
 import java.util.List;

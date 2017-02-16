@@ -2,8 +2,8 @@ package config;
 
 import arbre.Etat;
 import arbre.Noeud;
-import puissance4.EtatP4;
-import puissance4.NoeudP4;
+import jeu.puissance4.EtatP4;
+import jeu.puissance4.NoeudP4;
 
 public class Puissance4Factory implements GameFactory{
 
