@@ -48,7 +48,7 @@ public class Puissance4Factory implements GameFactory{
 
 		etat = getEtat(joueur);
 		
-		System.out.println("Temps de réflexion de l'ordinateur : " + (temps / 1000) + "s");
+		System.out.println("Temps de réflexion de l'ordinateur : " + (temps / 1000.0) + "s");
 		
 
 		// boucle de jeu

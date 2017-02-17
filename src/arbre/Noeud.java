@@ -36,7 +36,6 @@ public interface Noeud {
 	public int getMinOrMax();
 	
 	public void visiter(double recompense);
-	public void ajouterVisite(double recompense);
 	public void setStatistique(int s, double v);
 	public void setInitialJoueur(int joueur);
 	public void setMinOrMax(int minMax);

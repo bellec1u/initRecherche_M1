@@ -6,7 +6,6 @@ package jeu.trapProblem;
 import java.util.LinkedList;
 import java.util.List;
 
-import jeu.puissance4.EtatP4;
 import arbre.Action;
 import arbre.Etat;
 import arbre.Etat.FinDePartie;
@@ -22,7 +21,7 @@ public class NoeudTrap implements Noeud{
 	private Noeud parent = null;
 	private Action action = null;
 
-	private Etat etat;
+	private EtatTrap etat;
 	private List<Noeud> enfants;
 
 	private int minOrMax = 1; // min a la racine
@@ -32,7 +31,7 @@ public class NoeudTrap implements Noeud{
 	private static int JOUEUR_INIT = Etat.ORDI;
 	
 	public NoeudTrap(Etat etat) {
-		this.etat = new EtatP4(etat);
+		this.etat = new EtatTrap(etat);
 		this.enfants = new LinkedList<Noeud> ();
 	}
 
@@ -40,7 +39,7 @@ public class NoeudTrap implements Noeud{
 		parent = p;
 		enfants = new LinkedList<Noeud> ();
 		action = a;
-		etat = new EtatP4(parent.getEtat());
+		etat = new EtatTrap(parent.getEtat());
 		etat.jouerAction(a);
 	}
 
@@ -118,8 +117,14 @@ public class NoeudTrap implements Noeud{
 	 * @see arbre.Noeud#resultat()
 	 */
 	public double resultat() {
-		System.err.println("Pas implémenté : NoeudTrap.resultat()");
-		return 0;
+		for (Integer[] i : (Integer[][])this.etat.getPlateau()) {
+			if (this.etat.getPosJoueur() < i[0]) {
+				return i[1];
+			}
+		}
+		System.err.println("Error : NoeudTrap.resultat()");
+		System.exit(0);
+		return -1;
 	}
 
 	/**
@@ -170,17 +175,6 @@ public class NoeudTrap implements Noeud{
 	 * et increment le nombre de simulations
 	 */
 	public void visiter(double recompense) {
-		this.victoires += recompense;
-		this.simulations++;
-	}
-
-	/**
-	 * Ajoute a victoires la valeur de recompense
-	 * et increment le nombre de simulations
-	 */
-	public void ajouterVisite(double recompense) {
-		System.err.println("Dans noeudTrap, meme fonction:\n"
-				+ "\tvisiter() et ajouterVisiter()");
 		this.victoires += recompense;
 		this.simulations++;
 	}

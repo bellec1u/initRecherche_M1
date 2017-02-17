@@ -1,21 +1,16 @@
 package main;
 
-import java.util.Scanner;
-
 import algorithme.Mcts;
 import algorithme.formule.FormuleSelection;
 import algorithme.formule.Maxi;
 import algorithme.formule.Robuste;
 import algorithme.formule.Uct;
-import arbre.Action;
 import arbre.Etat;
-import arbre.Etat.FinDePartie;
 import arbre.Noeud;
 import config.Configuration;
 import config.GameFactory;
 import config.Puissance4Factory;
 import config.TrapFactory;
-
 
 /**
  * @author JUNGES Pierre-Marie - M1 Informatique 2016/2017
@@ -24,7 +19,7 @@ import config.TrapFactory;
  */
 public class Main {
 
-	private final static GameFactory GAME = new Puissance4Factory();
+	private final static GameFactory GAME = new TrapFactory();
 	private final static long TEMPS = Configuration.getInstance().getTemps();
 	
 	public static void main(String[] args) {

@@ -38,7 +38,7 @@ public class EtatP4 implements Etat, Cloneable {
 	 */
 	public EtatP4(Etat etat) {
 		plateau = new String[HAUTEUR][LARGEUR];
-		String[][] cpy = etat.getPlateau();
+		String[][] cpy = (String[][]) etat.getPlateau();
 		for(int i = 0 ; i < HAUTEUR ; i++) {
 			for( int j = 0 ; j < LARGEUR ; j++) {
 				this.plateau[i][j] = cpy[i][j];

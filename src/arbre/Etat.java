@@ -23,7 +23,7 @@ public interface Etat {
 	public int getJoueur();
 	public int getNbCoups();
 	
-	public String[][] getPlateau();
+	public Object[][] getPlateau();
 	
 	public Etat cloneable();
 	

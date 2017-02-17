@@ -56,6 +56,8 @@ public class Mcts implements Algorithme{
 	private Noeud developper(Noeud noeud) {
 		List<Action> actions = noeud.actionsPossible();
 		for (Action a : actions) {
+			System.out.println("SELECTIONNER MCTS");;
+
 			/*
 			 * REVOIR 
 			 */

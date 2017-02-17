@@ -207,14 +207,6 @@ public class NoeudP4 implements Noeud {
 		simulations = s;
 		victoires = v;
 	}
-	/**
-	 * Incremente le nombre de simulation
-	 * et victoire
-	 */
-	public void ajouterVisite(double recompense) {
-		simulations++;
-		victoires += recompense;
-	}
 
 	/**
 	 * Affiche sur la sortie standard 

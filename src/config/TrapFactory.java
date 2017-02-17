@@ -1,10 +1,13 @@
 package config;
 
+
+import main.Main;
 import jeu.trapProblem.EtatTrap;
 import jeu.trapProblem.NoeudTrap;
 import algorithme.formule.FormuleSelection;
 import arbre.Etat;
 import arbre.Noeud;
+import arbre.Etat.FinDePartie;
 
 public class TrapFactory implements GameFactory {
 
@@ -19,8 +22,43 @@ public class TrapFactory implements GameFactory {
 	}
 
 	public void jouer(long temps, FormuleSelection strategie) {
-		// TODO Auto-generated method stub
+		FinDePartie fin = FinDePartie.NON;
+
+		// initialisation
+		Etat etat = null;
 		
+		int joueur = Etat.HUMAIN;
+		etat = getEtat(joueur);
+		
+		System.out.println("Temps de réflexion de l'ordinateur : " + (temps / 1000.0) + "s");
+		
+
+		// boucle de jeu
+		do {
+			System.out.println(" ");
+			etat.afficherJeu();
+			if (etat.getJoueur() == Etat.HUMAIN) {
+				// tour de l'humain
+				Main.ordijoue_mcts(etat, temps, strategie);
+			} else {
+				// tour de l'ordinateur
+				Main.ordijoue_mcts(etat, temps, strategie);
+			}
+			fin = etat.testFin();
+			System.out.println("TrapFactory do while");
+		} while (fin == FinDePartie.NON);
+
+		System.out.println(" ");
+
+		etat.afficherJeu();
+
+		if (fin == FinDePartie.ORDI_GAGNE) {
+			System.out.println("** L'ordinateur a gagné **");
+		} else if (fin == FinDePartie.MATCHNUL) {
+			System.out.println("** Match nul ! **");
+		} else {
+			System.out.println("** BRAVO, l'ordinateur a perdu **");
+		}
 	}
 
 }

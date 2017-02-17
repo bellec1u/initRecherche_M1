@@ -17,7 +17,7 @@ import arbre.Etat;
  */
 public class EtatTrap implements Etat {
 
-	private int[][] plateau;
+	private Integer[][] plateau;
 	private double posPlayer;
 	// mettre le nombre de pas max
 	private int nbStep;
@@ -29,12 +29,21 @@ public class EtatTrap implements Etat {
 		// [distance, recompense]
 		// dans notre cas, de x = 0 à 2, la récomp. est de 3
 		// tout en cm
-		int[][] tab = {{200,3}, {270,-5}, {1000,5}};
+		Integer[][] tab = {{200,3}, {270,-5}, {1000,5}};
 		this.plateau = tab;
 		this.posPlayer = 0;
 		this.nbStep = 3;
 	}
 
+	public EtatTrap(Etat etat) {
+		this.plateau = (Integer[][])etat.getPlateau();
+		this.posPlayer = ((EtatTrap) etat).getPosJoueur();
+		this.nbStep = 3;
+	}
+
+	public double getPosJoueur() {
+		return this.posPlayer;
+	}
 	/**
 	 * affiche le jeu
 	 */
@@ -43,11 +52,11 @@ public class EtatTrap implements Etat {
 		System.out.println("Position du joueur : " + this.posPlayer);
 
 		System.out.print("O \t\t");
-		for (int[] tab : this.plateau) {
+		for (Integer[] tab : this.plateau) {
 			System.out.print(tab[0] + "\t\t");
 		}
 		System.out.println("");
-		for (int[] tab : this.plateau) {
+		for (Integer[] tab : this.plateau) {
 			System.out.print("| " + tab[1] + "\t\t");
 		}
 		System.out.println("");
@@ -75,9 +84,6 @@ public class EtatTrap implements Etat {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Etat#coups_possibles()
-	 */
 	public List<Action> coups_possibles() {
 		if (this.actions == null) {
 			this.actions = new LinkedList<Action>();
@@ -128,12 +134,8 @@ public class EtatTrap implements Etat {
 		return this.nbStep;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Etat#getPlateau()
-	 */
-	public String[][] getPlateau() {
-		System.err.println("Pas implémenté : EtatTrap.getPlateau");
-		return null;
+	public Integer[][] getPlateau() {
+		return this.plateau;
 	}
 
 	public Etat cloneable() {
