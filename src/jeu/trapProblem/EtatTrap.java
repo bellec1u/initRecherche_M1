@@ -23,7 +23,7 @@ public class EtatTrap implements Etat {
 	private final int minStep = 50, maxStep = 100; // en cm
 	private int joueur;
 	private List<Action> actions = null;
-	
+
 	public EtatTrap() {
 		// [distance, recompense]
 		// dans notre cas, de x = 0 à 2, la récomp. est de 3
@@ -40,7 +40,7 @@ public class EtatTrap implements Etat {
 	public void afficherJeu() {
 		System.out.println("--------------------");
 		System.out.println("Position du joueur : " + this.posPlayer);
-		
+
 		System.out.print("O \t\t");
 		for (int[] tab : this.plateau) {
 			System.out.print(tab[0] + "\t\t");
@@ -94,7 +94,12 @@ public class EtatTrap implements Etat {
 	 * @see arbre.Etat#jouerAction(arbre.Action)
 	 */
 	public boolean jouerAction(Action action) {
-		System.err.println("Pas implémenté : EtatTrap.jouerAction()");
+		if (this.nbStep > 0) {
+			this.posPlayer += action.getColonne();
+			this.nbStep--;
+			this.joueur = ( 1 - this.joueur );
+			return true;
+		}
 		return false;
 	}
 
@@ -128,7 +133,7 @@ public class EtatTrap implements Etat {
 		} catch (CloneNotSupportedException e) {
 			System.err.println(e.getMessage());
 		}
-		
+
 		return cpy;
 	}
 

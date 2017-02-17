@@ -14,7 +14,7 @@ public class TrapFactory implements GameFactory {
 	public Noeud getNoeud(Etat etat) {
 		Noeud noeud = new NoeudTrap(etat);
 		noeud.setInitialJoueur(etat.getJoueur());
-		return null;
+		return noeud;
 	}
 
 }
