@@ -3,11 +3,12 @@
  */
 package jeu.trapProblem;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import arbre.Action;
 import arbre.Etat;
-import arbre.Etat.FinDePartie;
 
 /**
  * @author JUNGES Pierre-Marie - M1 Informatique 2016/2017
@@ -78,8 +79,18 @@ public class EtatTrap implements Etat {
 	 * @see arbre.Etat#coups_possibles()
 	 */
 	public List<Action> coups_possibles() {
-		System.err.println("Pas implémenté : EtatTrap.coups_possibles()");
-		return null;
+		if (this.actions == null) {
+			this.actions = new LinkedList<Action>();
+			
+			// nb actions que l'ont prend
+			int x = 10;
+			Random r = new Random();
+			for ( int i = 0; i < x; i++ ) {
+				int step = r.nextInt(this.maxStep - this.minStep) + this.minStep;
+				this.actions.add( new ActionTrap(step) );
+			}
+		}
+		return this.actions;
 	}
 
 	/**

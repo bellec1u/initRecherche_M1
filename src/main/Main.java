@@ -13,6 +13,7 @@ import arbre.Etat.FinDePartie;
 import arbre.Noeud;
 import config.Configuration;
 import config.GameFactory;
+import config.Puissance4Factory;
 import config.TrapFactory;
 
 
@@ -23,7 +24,7 @@ import config.TrapFactory;
  */
 public class Main {
 
-	private final static GameFactory GAME = new TrapFactory();
+	private final static GameFactory GAME = new Puissance4Factory();
 	private final static long TEMPS = Configuration.getInstance().getTemps();
 	
 	public static void main(String[] args) {
@@ -39,64 +40,12 @@ public class Main {
 
 		// recuperation des donnees
 		FormuleSelection robusteOuMaxi = (args[0].equals("r")) ? new Robuste() : new Maxi();
-
-		Action coup;
-		FinDePartie fin = FinDePartie.NON;
-
-		// initialisation
-		Etat etat = null;
-
-		// choix j1
-		boolean correct = false;
-		@SuppressWarnings("resource")
-		Scanner sc = new Scanner(System.in);
-		int joueur = Etat.HUMAIN;
-		do {
-			System.out.println("Qui commence ? (0 : humain, 1 : ordinateur)");
-			String res = sc.nextLine();
-			if (res.equals("0") || res.equals("1")) {
-				correct = true;
-				joueur = Integer.parseInt(res);
-			} else {
-				System.out.println("Entrées valides : 0 ou 1 !");
-			}
-		} while (!correct);
-
-		etat = GAME.getEtat(joueur);
-
-		System.out.println("Temps de réflexion de l'ordinateur : " + (TEMPS / 1000) + "s");
-
-		// boucle de jeu
-		do {
-			System.out.println(" ");
-			etat.afficherJeu();
-			if (etat.getJoueur() == Etat.HUMAIN) {
-				// tour de l'humain
-				do {
-					coup = etat.demanderAction();
-				} while(!etat.jouerAction(coup));
-				//ordijoue_mcts(etat, TEMPS, robusteOuMaxi);
-			} else {
-				// tour de l'ordinateur
-				ordijoue_mcts(etat, TEMPS, robusteOuMaxi);
-			}
-			fin = etat.testFin();
-		} while (fin == FinDePartie.NON);
-
-		System.out.println(" ");
-
-		etat.afficherJeu();
-
-		if (fin == FinDePartie.ORDI_GAGNE) {
-			System.out.println("** L'ordinateur a gagné **");
-		} else if (fin == FinDePartie.MATCHNUL) {
-			System.out.println("** Match nul ! **");
-		} else {
-			System.out.println("** BRAVO, l'ordinateur a perdu **");
-		}
+		
+		// on lance le jeu
+		GAME.jouer(TEMPS, robusteOuMaxi);		
 	}
 
-	private static void ordijoue_mcts(Etat etat, long temps, FormuleSelection strategie) {
+	public static void ordijoue_mcts(Etat etat, long temps, FormuleSelection strategie) {
 		long tic, toc;
 		// Creer l'arbre de recherche
 		Noeud racine = GAME.getNoeud(etat);
