@@ -3,10 +3,13 @@
  */
 package jeu.trapProblem;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import jeu.puissance4.EtatP4;
 import arbre.Action;
 import arbre.Etat;
+import arbre.Etat.FinDePartie;
 import arbre.Noeud;
 
 /**
@@ -15,189 +18,213 @@ import arbre.Noeud;
  * Feb 16, 2017
  */
 public class NoeudTrap implements Noeud{
+	
+	private Noeud parent = null;
+	private Action action = null;
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#estTerminal()
+	private Etat etat;
+	private List<Noeud> enfants;
+
+	private int minOrMax = 1; // min a la racine
+	private int simulations = 0;
+	private double victoires = 0.0;
+	
+	private static int JOUEUR_INIT = Etat.ORDI;
+	
+	public NoeudTrap(Etat etat) {
+		this.etat = new EtatP4(etat);
+		this.enfants = new LinkedList<Noeud> ();
+	}
+
+	public NoeudTrap(Noeud p, Action a) {
+		parent = p;
+		enfants = new LinkedList<Noeud> ();
+		action = a;
+		etat = new EtatP4(parent.getEtat());
+		etat.jouerAction(a);
+	}
+
+	/**
+	 * retourne true si le noeud est terminal
+	 * 			false sinon
 	 */
 	public boolean estTerminal() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.etat.testFin() != FinDePartie.NON;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#resteAction()
+	/**
+	 * retourne true si il reste des pas a faire
+	 * 			false sinon
 	 */
 	public boolean resteAction() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.etat.getNbCoups() != 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#estRacine()
+	/**
+	 * retourne true si le noeud est la racine
+	 * 			false sinon
 	 */
 	public boolean estRacine() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.parent == null;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#actionsPossible()
+	/**
+	 * retourne une liste d'actions possibles
 	 */
 	public List<Action> actionsPossible() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.etat.coups_possibles();
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#ajouterEnfant(arbre.Action)
+	/**
+	 * crée un enfant avec une action et l'ajoute a ce noeud
 	 */
 	public Noeud ajouterEnfant(Action action) {
-		// TODO Auto-generated method stub
-		return null;
+		Noeud enfant = new NoeudTrap(this, action);
+		enfant.setMinOrMax( 1 - this.getMinOrMax() );
+		this.etat.supprimerAction(action);
+		this.enfants.add(enfant);
+		return enfant;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#predecesseur()
+	/**
+	 * retourne le parent du noeud
 	 */
 	public Noeud predecesseur() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.parent;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#retournerEnfant(int)
+	/**
+	 * retourne le noeud enfand num. "indice"
 	 */
 	public Noeud retournerEnfant(int indice) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.enfants.get(indice);
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#getAction()
+	/**
+	 * retourne l'action du noeud
 	 */
 	public Action getAction() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.action;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#getEtat()
+	/**
+	 * retourne l'etat du noeud
 	 */
 	public Etat getEtat() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.etat;
 	}
 
 	/* (non-Javadoc)
 	 * @see arbre.Noeud#resultat()
 	 */
 	public double resultat() {
-		// TODO Auto-generated method stub
+		System.err.println("Pas implémenté : NoeudTrap.resultat()");
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#rapportVictoireSimulation()
+	/**
+	 * Retourne le rapport Victoire / Simulation
 	 */
 	public double rapportVictoireSimulation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (double)( victoires / simulations );
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#retournerNbVictoire()
+	/**
+	 * retourne le nombre de victoires
 	 */
 	public double retournerNbVictoire() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.victoires;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#retournerNbEnfant()
+	/**
+	 * retourne le nombre d'enfants du noeud
 	 */
 	public int retournerNbEnfant() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.enfants.size();
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#retournerNbSimulation()
+	/**
+	 * retourne le nombre de simulations du noeud
 	 */
 	public int retournerNbSimulation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.simulations;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#getInitialJoueur()
+	/**
+	 * retourne le joueur initial
 	 */
 	public int getInitialJoueur() {
-		// TODO Auto-generated method stub
-		return 0;
+		return JOUEUR_INIT;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#getMinOrMax()
+	/**
+	 * retourne 1 si le noeud est un noeud min
+	 * 		    0 sinon
 	 */
 	public int getMinOrMax() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.minOrMax;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#visiter(double)
+	/**
+	 * Ajoute a victoires la valeur de recompense
+	 * et increment le nombre de simulations
 	 */
 	public void visiter(double recompense) {
-		// TODO Auto-generated method stub
-		
+		this.victoires += recompense;
+		this.simulations++;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#ajouterVisite(double)
+	/**
+	 * Ajoute a victoires la valeur de recompense
+	 * et increment le nombre de simulations
 	 */
 	public void ajouterVisite(double recompense) {
-		// TODO Auto-generated method stub
-		
+		System.err.println("Dans noeudTrap, meme fonction:\n"
+				+ "\tvisiter() et ajouterVisiter()");
+		this.victoires += recompense;
+		this.simulations++;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#setStatistique(int, double)
+	/**
+	 * Fixe le nombre de simulations et de victoires
 	 */
 	public void setStatistique(int s, double v) {
-		// TODO Auto-generated method stub
-		
+		this.simulations = s;
+		this.victoires = v;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#setInitialJoueur(int)
+	/**
+	 * Affecte une valeur de départ de JOUEUR
 	 */
 	public void setInitialJoueur(int joueur) {
-		// TODO Auto-generated method stub
-		
+		this.JOUEUR_INIT = joueur;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#setMinOrMax(int)
-	 */
 	public void setMinOrMax(int minMax) {
-		// TODO Auto-generated method stub
-		
+		this.minOrMax = minMax;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#afficherStatistiques()
+	/**
+	 * Affiche sur la sortie standard 
+	 * les statistiques du Noeud
 	 */
 	public void afficherStatistiques() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Statistiques : ");
+		if( action != null ) {
+			System.out.println("\t-Action : " + action);
+		} else {
+			System.out.println("\t-Action : none");
+		}
+		System.out.println("\t-Nombre de victoire(s) : " + victoires);
+		System.out.println("\t-Nombre de simulation(s) : " + simulations);
+		System.out.println("\t-Nombre d'enfant(s) : " + enfants.size());
+		double pourcentage = (victoires / simulations) * 100.0 ;
+		System.out.println("\t-Pourcentage : " + pourcentage + "\n");
 	}
-
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#setAction(arbre.Action)
-	 */
+	
 	public Noeud setAction(Action action) {
-		// TODO Auto-generated method stub
-		return null;
+		this.action = action;
+		return this;
 	}
 
 }

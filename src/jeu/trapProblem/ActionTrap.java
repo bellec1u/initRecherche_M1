@@ -13,11 +13,18 @@ import arbre.Noeud;
  */
 public class ActionTrap implements Action{
 
+	private int lengthStep; // en cm
+	
+	public ActionTrap(int ls) {
+		this.lengthStep = ls;
+	}
+	
 	/* (non-Javadoc)
 	 * @see arbre.Action#getLigne()
 	 */
 	public int getLigne() {
-		// TODO Auto-generated method stub
+		System.err.println("Ne doit pas passer par : ActionTrap.getLigne()");
+		System.exit(0);
 		return 0;
 	}
 
@@ -25,15 +32,14 @@ public class ActionTrap implements Action{
 	 * @see arbre.Action#getColonne()
 	 */
 	public int getColonne() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.lengthStep;
 	}
 
 	/* (non-Javadoc)
 	 * @see arbre.Action#estGagnante(arbre.Noeud)
 	 */
 	public boolean estGagnante(Noeud noeud) {
-		// TODO Auto-generated method stub
+		System.err.println("Pas implémenté : ActionTrap.estGagnante()");
 		return false;
 	}
 

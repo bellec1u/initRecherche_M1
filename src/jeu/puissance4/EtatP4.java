@@ -226,15 +226,6 @@ public class EtatP4 implements Etat, Cloneable {
 		} 
 	}
 
-	/***
-	 * Set un Etat de Test c-�-d 3 'O' align�s
-	 */
-	public void setEtatTest() {
-		this.plateau[0][0] = "O";
-		this.plateau[0][1] = "O";
-		this.plateau[0][2] = "O";
-	}
-
 	public void inverserGrille() {
 		for(int i = 0 ; i < HAUTEUR ; i++) {
 			for( int j = 0 ; j < LARGEUR ; j++) {

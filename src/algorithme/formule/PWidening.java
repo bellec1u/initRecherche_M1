@@ -14,7 +14,7 @@ public class PWidening implements FormuleSelection{
 
 	private final double C = 2.44;
 	private final double kUCB = Math.sqrt(2.0);
-	private double alpha = 0.666;
+	private double alpha = 0.666; // ]O,1[
 	
 	public Noeud selectionner(Noeud noeud) {
 		int k = (int)(C*Math.pow(noeud.retournerNbSimulation(), alpha));	

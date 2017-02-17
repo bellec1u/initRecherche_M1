@@ -217,7 +217,7 @@ public class NoeudP4 implements Noeud {
 	}
 
 	/**
-	 * Afffiche sur la sortie standard 
+	 * Affiche sur la sortie standard 
 	 * les statistiques du Noeud
 	 */
 	public void afficherStatistiques() {

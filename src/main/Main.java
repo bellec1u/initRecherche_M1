@@ -13,7 +13,7 @@ import arbre.Etat.FinDePartie;
 import arbre.Noeud;
 import config.Configuration;
 import config.GameFactory;
-import config.Puissance4Factory;
+import config.TrapFactory;
 
 
 /**
@@ -23,7 +23,7 @@ import config.Puissance4Factory;
  */
 public class Main {
 
-	private final static GameFactory GAME = new Puissance4Factory();
+	private final static GameFactory GAME = new TrapFactory();
 	private final static long TEMPS = Configuration.getInstance().getTemps();
 	
 	public static void main(String[] args) {
