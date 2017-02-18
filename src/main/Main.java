@@ -73,12 +73,12 @@ public class Main {
 		 * On choisit la bonne strategie demandée par l'utilisateur
 		 */
 		racine = strategie.selectionner(racine);
-		
+		/*
 		System.out.println("Action choisit : " + racine.getAction());
 		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
 			racine.retournerEnfant(i).afficherStatistiques();
 		}
-		 
+		 */
 		etat.jouerAction(racine.getAction());
 	}
 

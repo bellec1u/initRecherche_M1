@@ -56,7 +56,7 @@ public class NoeudTrap implements Noeud{
 	 * 			false sinon
 	 */
 	public boolean resteAction() {
-		return this.etat.getNbCoups() != 0;
+		return (this.etat.getNbCoups() != 0) && (this.etat.coups_possibles().size() != 0);
 	}
 
 	/**

@@ -41,7 +41,6 @@ public class Mcts implements Algorithme{
 	/* 1. */
 	private Noeud selectionner(Noeud noeud) {
 		Noeud selection = noeud;
-
 		while( !selection.estTerminal() ) {
 			if(selection.resteAction()) {
 				return developper(selection);
@@ -56,8 +55,6 @@ public class Mcts implements Algorithme{
 	private Noeud developper(Noeud noeud) {
 		List<Action> actions = noeud.actionsPossible();
 		for (Action a : actions) {
-			System.out.println("SELECTIONNER MCTS");;
-
 			/*
 			 * REVOIR 
 			 */

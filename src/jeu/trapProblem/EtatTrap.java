@@ -21,7 +21,8 @@ public class EtatTrap implements Etat {
 	private double posPlayer;
 	// mettre le nombre de pas max
 	private int nbStep;
-	private final int minStep = 50, maxStep = 100; // en cm
+	private int nbStepTest = 1000;
+	private final int minStep = 0, maxStep = 100; // en cm
 	private int joueur;
 	private List<Action> actions = null;
 
@@ -29,7 +30,7 @@ public class EtatTrap implements Etat {
 		// [distance, recompense]
 		// dans notre cas, de x = 0 à 2, la récomp. est de 3
 		// tout en cm
-		Integer[][] tab = {{200,3}, {270,-5}, {1000,5}};
+		Integer[][] tab = {{170,3}, {210,-10}, {1000,5}};
 		this.plateau = tab;
 		this.posPlayer = 0;
 		this.nbStep = 3;
@@ -38,7 +39,7 @@ public class EtatTrap implements Etat {
 	public EtatTrap(Etat etat) {
 		this.plateau = (Integer[][])etat.getPlateau();
 		this.posPlayer = ((EtatTrap) etat).getPosJoueur();
-		this.nbStep = 3;
+		this.nbStep = etat.getNbCoups();
 	}
 
 	public double getPosJoueur() {
@@ -81,17 +82,16 @@ public class EtatTrap implements Etat {
 	 */
 	public Action demanderAction() {
 		System.err.println("Pas implémenté : EtatTrap.demanderAction()");
+		System.exit(0);
 		return null;
 	}
 
 	public List<Action> coups_possibles() {
 		if (this.actions == null) {
 			this.actions = new LinkedList<Action>();
-			
 			// nb actions que l'ont prend
-			int x = 10;
 			Random r = new Random();
-			for ( int i = 0; i < x; i++ ) {
+			for ( int i = 0; i < this.nbStepTest; i++ ) {
 				int step = r.nextInt(this.maxStep - this.minStep) + this.minStep;
 				this.actions.add( new ActionTrap(step) );
 			}
