@@ -66,6 +66,8 @@ public class Main {
 			toc = System.currentTimeMillis();
 			iter++;
 		} while (toc < (tic + temps));
+		
+		System.out.println("");
 		System.out.println("Itérations effectuées : " + iter);
 
 		/* 

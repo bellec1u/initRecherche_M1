@@ -35,7 +35,6 @@ public class TrapFactory implements GameFactory {
 
 		// boucle de jeu
 		do {
-			System.out.println(" ");
 			etat.afficherJeu();
 			if (etat.getJoueur() == Etat.HUMAIN) {
 				// tour de l'humain
@@ -45,20 +44,22 @@ public class TrapFactory implements GameFactory {
 				Main.ordijoue_mcts(etat, temps, strategie);
 			}
 			fin = etat.testFin();
-			System.out.println("TrapFactory do while");
+			//System.out.println("TrapFactory do while");
 		} while (fin == FinDePartie.NON);
-
-		System.out.println(" ");
 
 		etat.afficherJeu();
 
-		if (fin == FinDePartie.ORDI_GAGNE) {
-			System.out.println("** L'ordinateur a gagné **");
-		} else if (fin == FinDePartie.MATCHNUL) {
-			System.out.println("** Match nul ! **");
-		} else {
-			System.out.println("** BRAVO, l'ordinateur a perdu **");
-		}
+		System.out.println("");
+		System.out.println("");
+		System.out.println("Fin de partie.");
+		
+//		if (fin == FinDePartie.ORDI_GAGNE) {
+//			System.out.println("** L'ordinateur a gagné **");
+//		} else if (fin == FinDePartie.MATCHNUL) {
+//			System.out.println("** Match nul ! **");
+//		} else {
+//			System.out.println("** BRAVO, l'ordinateur a perdu **");
+//		}
 	}
 
 }

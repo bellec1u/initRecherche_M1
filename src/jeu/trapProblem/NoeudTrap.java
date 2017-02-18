@@ -118,7 +118,7 @@ public class NoeudTrap implements Noeud{
 	 */
 	public double resultat() {
 		for (Integer[] i : (Integer[][])this.etat.getPlateau()) {
-			if (this.etat.getPosJoueur() < i[0]) {
+			if (this.etat.getPosJoueur() <= i[0]) {
 				return i[1];
 			}
 		}

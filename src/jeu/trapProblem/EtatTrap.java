@@ -22,24 +22,28 @@ public class EtatTrap implements Etat {
 	// mettre le nombre de pas max
 	private int nbStep;
 	private int nbStepTest = 1000;
-	private final int minStep = 0, maxStep = 100; // en cm
+	private final int minStep = 70, maxStep = 100; // en cm
 	private int joueur;
 	private List<Action> actions = null;
+	
+	private int score;
 
 	public EtatTrap() {
 		// [distance, recompense]
 		// dans notre cas, de x = 0 à 2, la récomp. est de 3
 		// tout en cm
-		Integer[][] tab = {{170,3}, {210,-10}, {1000,5}};
+		Integer[][] tab = {{100,70}, {170,0}, {1000,100}};
 		this.plateau = tab;
 		this.posPlayer = 0;
-		this.nbStep = 3;
+		this.nbStep = 2;
+		this.score = 0;
 	}
 
 	public EtatTrap(Etat etat) {
 		this.plateau = (Integer[][])etat.getPlateau();
 		this.posPlayer = ((EtatTrap) etat).getPosJoueur();
 		this.nbStep = etat.getNbCoups();
+		this.score = ((EtatTrap)etat).getScore();
 	}
 
 	public double getPosJoueur() {
@@ -49,8 +53,9 @@ public class EtatTrap implements Etat {
 	 * affiche le jeu
 	 */
 	public void afficherJeu() {
-		System.out.println("--------------------");
+		System.out.println("----------------------------------------------------");
 		System.out.println("Position du joueur : " + this.posPlayer);
+		System.out.println("Score : " + this.score);
 
 		System.out.print("O \t\t");
 		for (Integer[] tab : this.plateau) {
@@ -60,6 +65,7 @@ public class EtatTrap implements Etat {
 		for (Integer[] tab : this.plateau) {
 			System.out.print("| " + tab[1] + "\t\t");
 		}
+		System.out.println("");
 		System.out.println("");
 	}
 
@@ -115,7 +121,15 @@ public class EtatTrap implements Etat {
 			this.posPlayer += action.getColonne();
 			this.nbStep--;
 			this.joueur = ( 1 - this.joueur );
-			return true;
+			
+			for (Integer[] i : this.plateau) {
+				if (this.posPlayer <= i[0]) {
+					this.score += i[1];
+					return true;
+				}
+			}
+			System.err.println("Error : EtatTrap.jouerAction()");
+			System.exit(0);
 		}
 		return false;
 	}
@@ -136,6 +150,10 @@ public class EtatTrap implements Etat {
 
 	public Integer[][] getPlateau() {
 		return this.plateau;
+	}
+	
+	public int getScore() {
+		return this.score;
 	}
 
 	public Etat cloneable() {
