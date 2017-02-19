@@ -17,10 +17,10 @@ import arbre.Etat;
  */
 public class EtatTrap implements Etat {
 
-	private Integer[][] plateau;
+	private Integer[][] plateau = {{100,70}, {170,0}, {1000,100}};
 	private double posPlayer;
 	// mettre le nombre de pas max
-	private int nbStep;
+	private int nbStep = 2;
 	private int nbStepTest = 1000;
 	private final int minStep = 70, maxStep = 100; // en cm
 	private int joueur;
@@ -32,15 +32,11 @@ public class EtatTrap implements Etat {
 		// [distance, recompense]
 		// dans notre cas, de x = 0 à 2, la récomp. est de 3
 		// tout en cm
-		Integer[][] tab = {{100,70}, {170,0}, {1000,100}};
-		this.plateau = tab;
 		this.posPlayer = 0;
-		this.nbStep = 2;
 		this.score = 0;
 	}
 
 	public EtatTrap(Etat etat) {
-		this.plateau = (Integer[][])etat.getPlateau();
 		this.posPlayer = ((EtatTrap) etat).getPosJoueur();
 		this.nbStep = etat.getNbCoups();
 		this.score = ((EtatTrap)etat).getScore();
@@ -113,9 +109,6 @@ public class EtatTrap implements Etat {
 		return this.nbStep == 0 ? FinDePartie.HUMAIN_GAGNE : FinDePartie.NON;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Etat#jouerAction(arbre.Action)
-	 */
 	public boolean jouerAction(Action action) {
 		if (this.nbStep > 0) {
 			this.posPlayer += action.getColonne();
@@ -166,6 +159,43 @@ public class EtatTrap implements Etat {
 		}
 
 		return cpy;
+	}
+	
+	/**
+	 * fait bouger la position du joueur de x
+	 * simule un coup de vent par exemple
+	 * @param i
+	 */
+	public void ajouterBruit(int x) {
+		double lastPosPlayer = this.posPlayer;		
+		this.posPlayer += x;
+		
+		int lastX = 0, newX = 0;
+		boolean findLastX = false, findNewX = false;
+		for (Integer[] i : this.plateau) {
+			if (lastPosPlayer <= i[0] && !findLastX) {
+				lastX = i[1];
+				findLastX = true;
+			}
+			if (this.posPlayer <= i[0] && !findNewX) {
+				newX = i[1];
+				findNewX = true;
+			}
+		}
+		
+//		System.out.println("#######################################");
+//		System.out.println("x : "+x);
+//		System.out.println("lastPos : "+lastPosPlayer);
+//		System.out.println("newPos : "+this.posPlayer);
+//		System.out.println("lastScore : "+this.score);
+//		System.out.println("lastX : " + lastX);
+//		System.out.println("newX : "+newX);
+		
+		// score = ancienScore - scoreDernPos + scoreNouvPos
+		this.score = this.score - lastX + newX;
+		
+//		System.out.println("Newscore : "+this.score);
+//		System.out.println("#######################################");
 	}
 
 }

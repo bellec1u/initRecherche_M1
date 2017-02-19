@@ -39,7 +39,6 @@ public class ActionTrap implements Action{
 	 * @see arbre.Action#estGagnante(arbre.Noeud)
 	 */
 	public boolean estGagnante(Noeud noeud) {
-
 		//System.out.println("ici. "+noeud.getEtat().getNbCoups());
 		return (noeud.getEtat().getNbCoups() == 0);
 	}

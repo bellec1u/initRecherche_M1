@@ -3,13 +3,12 @@ package main;
 import algorithme.Mcts;
 import algorithme.formule.FormuleSelection;
 import algorithme.formule.Maxi;
+import algorithme.formule.PWidening;
 import algorithme.formule.Robuste;
-import algorithme.formule.Uct;
 import arbre.Etat;
 import arbre.Noeud;
 import config.Configuration;
 import config.GameFactory;
-import config.Puissance4Factory;
 import config.TrapFactory;
 
 /**
@@ -45,7 +44,7 @@ public class Main {
 		// Creer l'arbre de recherche
 		Noeud racine = GAME.getNoeud(etat);
 
-		FormuleSelection uct = new Uct();
+		FormuleSelection uct = new PWidening();
 		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
 
 		// pre rempli déjà l'arbre
