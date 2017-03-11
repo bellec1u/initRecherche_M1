@@ -13,25 +13,13 @@ import arbre.Noeud;
  */
 public class ActionTrap implements Action{
 
-	private int lengthStep; // en cm
+	private double lengthStep; // en cm
 	
-	public ActionTrap(int ls) {
+	public ActionTrap(double ls) {
 		this.lengthStep = ls;
 	}
 	
-	/* (non-Javadoc)
-	 * @see arbre.Action#getLigne()
-	 */
-	public int getLigne() {
-		System.err.println("Ne doit pas passer par : ActionTrap.getLigne()");
-		System.exit(0);
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see arbre.Action#getColonne()
-	 */
-	public int getColonne() {
+	public double getStep() {
 		return this.lengthStep;
 	}
 

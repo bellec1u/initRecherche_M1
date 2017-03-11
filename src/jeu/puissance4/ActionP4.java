@@ -60,7 +60,7 @@ public class ActionP4 implements Action {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		Action a = (Action)obj;
+		ActionP4 a = (ActionP4)obj;
 		return (ligne == a.getLigne() && colonne == a.getColonne());
 	}
 	

@@ -65,7 +65,7 @@ public class Mcts implements Algorithme{
 		return noeud.ajouterEnfant(actions.get( random.nextInt( actions.size() ) ));
 	}
 
-	/* 3. */
+	/* 3. on stock plus simu*/
 	private Noeud simuler(Noeud noeud) {
 		Noeud simulation = noeud;
 		

@@ -48,7 +48,8 @@ public class TrapFactory implements GameFactory {
 			// un coup de vent ! c'est balot ----- ----- ----- ----- ----- ----- 
 			Random r = new Random();
 			// alea [-10;10]
-			int min = -15, max = 15, x = r.nextInt(max - min) + min;
+			//double min = -10, max = 10, x = (double)((r.nextInt((int) (max*10 - min*10)) + min*10)/10);
+			double min = -10, max = 10, x = min + (max - min) * r.nextDouble();
 			((EtatTrap) etat).ajouterBruit( x );
 			
 			System.out.println("Un coup de vent vous deplace de : " + x + " !!!");

@@ -215,10 +215,10 @@ public class EtatP4 implements Etat, Cloneable {
 	 * Ajoute l'action action dans le plateau de jeu
 	 */
 	public boolean jouerAction(Action action) {
-		if (this.plateau[action.getLigne()][action.getColonne()] != " ") {
+		if (this.plateau[((ActionP4) action).getLigne()][((ActionP4) action).getColonne()] != " ") {
 			return false;
 		} else {
-			this.plateau[action.getLigne()][action.getColonne()] = ((this.joueur == 0) ? "X" : "O");
+			this.plateau[((ActionP4) action).getLigne()][((ActionP4) action).getColonne()] = ((this.joueur == 0) ? "X" : "O");
 
 			// à l'autre joueur de jouer
 			this.joueur = (1 - this.joueur);

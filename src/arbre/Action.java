@@ -9,9 +9,6 @@ package arbre;
  * Jan 26, 2017
  */
 public interface Action {
-
-	public int getLigne();
-	public int getColonne();
 	
 	public boolean estGagnante(Noeud noeud);
 	

@@ -94,7 +94,7 @@ public class EtatTrap implements Etat {
 			// nb actions que l'ont prend
 			Random r = new Random();
 			for ( int i = 0; i < this.nbStepTest; i++ ) {
-				int step = r.nextInt(this.maxStep - this.minStep) + this.minStep;
+				double step = this.minStep + (this.maxStep - this.minStep) * r.nextDouble();
 				this.actions.add( new ActionTrap(step) );
 			}
 		}
@@ -111,7 +111,7 @@ public class EtatTrap implements Etat {
 
 	public boolean jouerAction(Action action) {
 		if (this.nbStep > 0) {
-			this.posPlayer += action.getColonne();
+			this.posPlayer += ((ActionTrap) action).getStep();
 			this.nbStep--;
 			this.joueur = ( 1 - this.joueur );
 			
@@ -166,7 +166,7 @@ public class EtatTrap implements Etat {
 	 * simule un coup de vent par exemple
 	 * @param i
 	 */
-	public void ajouterBruit(int x) {
+	public void ajouterBruit(double x) {
 		double lastPosPlayer = this.posPlayer;		
 		this.posPlayer += x;
 		
