@@ -221,4 +221,8 @@ public class NoeudTrap implements Noeud{
 		return this;
 	}
 
+	public void supprimerEnfants() {
+		enfants.clear();
+	}
+
 }

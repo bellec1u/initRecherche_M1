@@ -242,4 +242,8 @@ public class NoeudP4 implements Noeud {
 	public int getMinOrMax() {
 		return minOrMax;
 	}
+
+	public void supprimerEnfants() {
+		enfants.clear();
+	}
 }

@@ -40,6 +40,7 @@ public interface Noeud {
 	public void setInitialJoueur(int joueur);
 	public void setMinOrMax(int minMax);
 	public void afficherStatistiques();
+	public void supprimerEnfants();
 
 	public Noeud setAction(Action action);
 	

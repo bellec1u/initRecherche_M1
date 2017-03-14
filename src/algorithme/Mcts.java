@@ -27,12 +27,12 @@ public class Mcts implements Algorithme{
 
 	public Noeud executer(Noeud noeud) {
 		Noeud meilleurChoix = selectionner(noeud);
-
+		
 		/* 3. On simule la fin de partie avec une démarche aléatoire */
-		meilleurChoix = simuler(meilleurChoix);
+		Noeud terminal = simuler(meilleurChoix);
 
 		/* 4. On mets a jour le meilleur enfant */
-		meilleurChoix = mettreAJour(meilleurChoix);
+		meilleurChoix = mettreAJour(terminal);
 
 		// On retourne ensuite le noeud initial
 		return meilleurChoix;
@@ -55,9 +55,6 @@ public class Mcts implements Algorithme{
 	private Noeud developper(Noeud noeud) {
 		List<Action> actions = noeud.actionsPossible();
 		for (Action a : actions) {
-			/*
-			 * REVOIR 
-			 */
 			if ( a.estGagnante( noeud ) ) {
 				return noeud.ajouterEnfant(a);
 			}
@@ -71,8 +68,9 @@ public class Mcts implements Algorithme{
 		
 		while( !simulation.estTerminal() ) {
 			simulation = developper(simulation);
-		}
 
+		}
+		noeud.supprimerEnfants();
 		return simulation;
 	}
 

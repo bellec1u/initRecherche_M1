@@ -5,10 +5,12 @@ import algorithme.formule.FormuleSelection;
 import algorithme.formule.Maxi;
 import algorithme.formule.PWidening;
 import algorithme.formule.Robuste;
+import algorithme.formule.Uct;
 import arbre.Etat;
 import arbre.Noeud;
 import config.Configuration;
 import config.GameFactory;
+import config.Puissance4Factory;
 import config.TrapFactory;
 
 /**
@@ -18,7 +20,7 @@ import config.TrapFactory;
  */
 public class Main {
 
-	private final static GameFactory GAME = new TrapFactory();
+	private final static GameFactory GAME = new Puissance4Factory();
 	private final static long TEMPS = Configuration.getInstance().getTemps();
 	
 	public static void main(String[] args) {
@@ -44,7 +46,7 @@ public class Main {
 		// Creer l'arbre de recherche
 		Noeud racine = GAME.getNoeud(etat);
 
-		FormuleSelection uct = new PWidening();
+		FormuleSelection uct = new Uct();
 		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
 
 		// pre rempli déjà l'arbre
