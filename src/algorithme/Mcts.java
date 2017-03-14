@@ -32,7 +32,7 @@ public class Mcts implements Algorithme{
 		Noeud terminal = simuler(meilleurChoix);
 
 		/* 4. On mets a jour le meilleur enfant */
-		meilleurChoix = mettreAJour(terminal);
+		meilleurChoix = mettreAJour(meilleurChoix, terminal.resultat());
 
 		// On retourne ensuite le noeud initial
 		return meilleurChoix;
@@ -75,8 +75,7 @@ public class Mcts implements Algorithme{
 	}
 
 	/* 4. */
-	private Noeud mettreAJour(Noeud noeud) {
-		double recompense = noeud.resultat();
+	private Noeud mettreAJour(Noeud noeud, double recompense) {
 		
 		while( !noeud.estRacine() ) {
 			noeud.visiter(recompense);
