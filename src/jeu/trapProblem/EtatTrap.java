@@ -89,6 +89,8 @@ public class EtatTrap implements Etat {
 	}
 
 	public List<Action> coups_possibles() {
+		// retourne une liste d'actions choisi aléatoirement dans [minStep; maxStep]
+		/*
 		if (this.actions == null) {
 			this.actions = new LinkedList<Action>();
 			// nb actions que l'ont prend
@@ -98,6 +100,18 @@ public class EtatTrap implements Etat {
 				this.actions.add( new ActionTrap(step) );
 			}
 		}
+		*/
+		
+		// retourne une liste d'actions choisi de maniere uniforme
+		if (this.actions == null) {
+			this.actions = new LinkedList<Action>();
+			double i = this.minStep;
+			while (i < this.maxStep) {
+				this.actions.add( new ActionTrap(i) );
+				i = i + ((this.maxStep - this.minStep + 0.0) / this.nbStepTest);
+			}
+		}
+		
 		return this.actions;
 	}
 
