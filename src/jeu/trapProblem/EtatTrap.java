@@ -25,7 +25,7 @@ public class EtatTrap implements Etat {
 	private final int minStep = 70, maxStep = 100; // en cm
 	private int joueur;
 	private List<Action> actions = null;
-	
+
 	private int score;
 
 	public EtatTrap() {
@@ -100,8 +100,8 @@ public class EtatTrap implements Etat {
 				this.actions.add( new ActionTrap(step) );
 			}
 		}
-		*/
-		
+		 */
+
 		// retourne une liste d'actions choisi de maniere uniforme
 		if (this.actions == null) {
 			this.actions = new LinkedList<Action>();
@@ -111,7 +111,16 @@ public class EtatTrap implements Etat {
 				i = i + ((this.maxStep - this.minStep + 0.0) / this.nbStepTest);
 			}
 		}
-		
+
+
+		// un coup de vent ! c'est balot ----- ----- ----- ----- ----- ----- 
+		Random r = new Random();
+		for (Action a : this.actions) {
+			// alea [-10;10]
+			double min = -10, max = 10, x = min + (max - min) * r.nextDouble();
+			((ActionTrap) a).ajouterBruit(x);
+		}
+
 		return this.actions;
 	}
 
@@ -128,7 +137,7 @@ public class EtatTrap implements Etat {
 			this.posPlayer += ((ActionTrap) action).getStep();
 			this.nbStep--;
 			this.joueur = ( 1 - this.joueur );
-			
+
 			for (Integer[] i : this.plateau) {
 				if (this.posPlayer <= i[0]) {
 					this.score += i[1];
@@ -158,7 +167,7 @@ public class EtatTrap implements Etat {
 	public Integer[][] getPlateau() {
 		return this.plateau;
 	}
-	
+
 	public int getScore() {
 		return this.score;
 	}
@@ -174,7 +183,7 @@ public class EtatTrap implements Etat {
 
 		return cpy;
 	}
-	
+
 	/**
 	 * fait bouger la position du joueur de x
 	 * simule un coup de vent par exemple
@@ -183,7 +192,7 @@ public class EtatTrap implements Etat {
 	public void ajouterBruit(double x) {
 		double lastPosPlayer = this.posPlayer;		
 		this.posPlayer += x;
-		
+
 		int lastX = 0, newX = 0;
 		boolean findLastX = false, findNewX = false;
 		for (Integer[] i : this.plateau) {
@@ -196,20 +205,20 @@ public class EtatTrap implements Etat {
 				findNewX = true;
 			}
 		}
-		
-//		System.out.println("#######################################");
-//		System.out.println("x : "+x);
-//		System.out.println("lastPos : "+lastPosPlayer);
-//		System.out.println("newPos : "+this.posPlayer);
-//		System.out.println("lastScore : "+this.score);
-//		System.out.println("lastX : " + lastX);
-//		System.out.println("newX : "+newX);
-		
+
+		//		System.out.println("#######################################");
+		//		System.out.println("x : "+x);
+		//		System.out.println("lastPos : "+lastPosPlayer);
+		//		System.out.println("newPos : "+this.posPlayer);
+		//		System.out.println("lastScore : "+this.score);
+		//		System.out.println("lastX : " + lastX);
+		//		System.out.println("newX : "+newX);
+
 		// score = ancienScore - scoreDernPos + scoreNouvPos
 		this.score = this.score - lastX + newX;
-		
-//		System.out.println("Newscore : "+this.score);
-//		System.out.println("#######################################");
+
+		//		System.out.println("Newscore : "+this.score);
+		//		System.out.println("#######################################");
 	}
 
 }

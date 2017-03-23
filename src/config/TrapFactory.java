@@ -45,6 +45,7 @@ public class TrapFactory implements GameFactory {
 			Main.ordijoue_mcts(etat, temps, strategie);
 			etat.afficherJeu();
 
+			/*
 			// un coup de vent ! c'est balot ----- ----- ----- ----- ----- ----- 
 			Random r = new Random();
 			// alea [-10;10]
@@ -58,6 +59,7 @@ public class TrapFactory implements GameFactory {
 			etat.afficherJeu();
 			System.out.println("");
 			System.out.println("");
+			*/
 			// ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 			etat.setJoueur(1 - etat.getJoueur());

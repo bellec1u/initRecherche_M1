@@ -14,11 +14,11 @@ import arbre.Noeud;
 public class ActionTrap implements Action{
 
 	private double lengthStep; // en cm
-	
+
 	public ActionTrap(double ls) {
 		this.lengthStep = ls;
 	}
-	
+
 	public double getStep() {
 		return this.lengthStep;
 	}
@@ -29,6 +29,10 @@ public class ActionTrap implements Action{
 	public boolean estGagnante(Noeud noeud) {
 		//System.out.println("ici. "+noeud.getEtat().getNbCoups());
 		return (noeud.getEtat().getNbCoups() == 0);
+	}
+
+	public void ajouterBruit(double x) {
+		this.lengthStep += x;
 	}
 
 }
