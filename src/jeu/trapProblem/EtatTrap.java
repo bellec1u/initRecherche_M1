@@ -144,8 +144,8 @@ public class EtatTrap implements Etat {
 					return true;
 				}
 			}
-			System.err.println("Error : EtatTrap.jouerAction()");
-			System.exit(0);
+			this.score += this.plateau[this.plateau.length-1][1];
+			return true;
 		}
 		return false;
 	}

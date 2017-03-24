@@ -122,9 +122,7 @@ public class NoeudTrap implements Noeud{
 				return i[1];
 			}
 		}
-		System.err.println("Error : NoeudTrap.resultat()");
-		System.exit(0);
-		return -1;
+		return this.etat.getPlateau()[this.etat.getPlateau().length-1][1];
 	}
 
 	/**
