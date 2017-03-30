@@ -3,9 +3,8 @@
  */
 package jeu.trapProblem;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import arbre.Action;
 import arbre.Etat;
@@ -21,8 +20,7 @@ public class EtatTrap implements Etat {
 	private double posPlayer;
 	// mettre le nombre de pas max
 	private int nbStep = 2;
-	private int nbStepTest = 1000;
-	private final int minStep = 70, maxStep = 100; // en cm
+	private final int minStep = 0, maxStep = 100; // en cm
 	private int joueur;
 	private List<Action> actions = null;
 
@@ -88,40 +86,14 @@ public class EtatTrap implements Etat {
 		return null;
 	}
 
+	/**
+	 * retourne les bornes d'actions possibles
+	 */
 	public List<Action> coups_possibles() {
-		// retourne une liste d'actions choisi aléatoirement dans [minStep; maxStep]
-		/*
-		if (this.actions == null) {
-			this.actions = new LinkedList<Action>();
-			// nb actions que l'ont prend
-			Random r = new Random();
-			for ( int i = 0; i < this.nbStepTest; i++ ) {
-				double step = this.minStep + (this.maxStep - this.minStep) * r.nextDouble();
-				this.actions.add( new ActionTrap(step) );
-			}
-		}
-		 */
-
-		// retourne une liste d'actions choisi de maniere uniforme
-		if (this.actions == null) {
-			this.actions = new LinkedList<Action>();
-			double i = this.minStep;
-			while (i < this.maxStep) {
-				this.actions.add( new ActionTrap(i) );
-				i = i + ((this.maxStep - this.minStep + 0.0) / this.nbStepTest);
-			}
-		}
-
-
-		// un coup de vent ! c'est balot ----- ----- ----- ----- ----- ----- 
-		Random r = new Random();
-		for (Action a : this.actions) {
-			// alea [-10;10]
-			double min = -10, max = 10, x = min + (max - min) * r.nextDouble();
-			((ActionTrap) a).ajouterBruit(x);
-		}
-
-		return this.actions;
+		List<Action> la = new ArrayList<Action>();
+		la.add( new ActionTrap(this.minStep) );
+		la.add( new ActionTrap(this.maxStep) );
+		return la;
 	}
 
 	/**
@@ -182,43 +154,6 @@ public class EtatTrap implements Etat {
 		}
 
 		return cpy;
-	}
-
-	/**
-	 * fait bouger la position du joueur de x
-	 * simule un coup de vent par exemple
-	 * @param i
-	 */
-	public void ajouterBruit(double x) {
-		double lastPosPlayer = this.posPlayer;		
-		this.posPlayer += x;
-
-		int lastX = 0, newX = 0;
-		boolean findLastX = false, findNewX = false;
-		for (Integer[] i : this.plateau) {
-			if (lastPosPlayer <= i[0] && !findLastX) {
-				lastX = i[1];
-				findLastX = true;
-			}
-			if (this.posPlayer <= i[0] && !findNewX) {
-				newX = i[1];
-				findNewX = true;
-			}
-		}
-
-		//		System.out.println("#######################################");
-		//		System.out.println("x : "+x);
-		//		System.out.println("lastPos : "+lastPosPlayer);
-		//		System.out.println("newPos : "+this.posPlayer);
-		//		System.out.println("lastScore : "+this.score);
-		//		System.out.println("lastX : " + lastX);
-		//		System.out.println("newX : "+newX);
-
-		// score = ancienScore - scoreDernPos + scoreNouvPos
-		this.score = this.score - lastX + newX;
-
-		//		System.out.println("Newscore : "+this.score);
-		//		System.out.println("#######################################");
 	}
 
 }

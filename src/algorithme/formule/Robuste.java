@@ -10,6 +10,7 @@ public class Robuste implements FormuleSelection {
 		int indice = 0;
 		int value = 0;
 		int enfants = noeud.retournerNbEnfant();
+		System.out.println(enfants);
 		while(k < enfants ) {
 			value = noeud.retournerEnfant(k).retournerNbSimulation();
 			if (value > maxi) {
@@ -18,6 +19,7 @@ public class Robuste implements FormuleSelection {
 			}
 			k++;
 		}
+
 		return noeud.setAction( noeud.retournerEnfant(indice).getAction() );
 	}
 

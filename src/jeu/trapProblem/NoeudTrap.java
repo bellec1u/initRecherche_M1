@@ -3,8 +3,10 @@
  */
 package jeu.trapProblem;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import arbre.Action;
 import arbre.Etat;
@@ -16,8 +18,8 @@ import arbre.Noeud;
  *
  * Feb 16, 2017
  */
-public class NoeudTrap implements Noeud{
-	
+public class NoeudTrap implements Noeud {
+
 	private Noeud parent = null;
 	private Action action = null;
 
@@ -27,9 +29,9 @@ public class NoeudTrap implements Noeud{
 	private int minOrMax = 1; // min a la racine
 	private int simulations = 0;
 	private double victoires = 0.0;
-	
+
 	private static int JOUEUR_INIT = Etat.ORDI;
-	
+
 	public NoeudTrap(Etat etat) {
 		this.etat = new EtatTrap(etat);
 		this.enfants = new LinkedList<Noeud> ();
@@ -78,11 +80,26 @@ public class NoeudTrap implements Noeud{
 	 * crée un enfant avec une action et l'ajoute a ce noeud
 	 */
 	public Noeud ajouterEnfant(Action action) {
+		((ActionTrap) action).ajouterBruit( this.getBruit() );
 		Noeud enfant = new NoeudTrap(this, action);
 		enfant.setMinOrMax( 1 - this.getMinOrMax() );
-		this.etat.supprimerAction(action);
+		//this.etat.supprimerAction(action);
 		this.enfants.add(enfant);
 		return enfant;
+	}
+
+	public double getBruit() {
+		// un coup de vent ! c'est balot !
+		Random r = new Random();
+		double R = 1.0;
+		
+		List<Double> simu = new ArrayList<Double>();
+		
+		for (int i = 0; i < 100; i++) {
+			simu.add( R * r.nextDouble() );
+		}
+		
+		return simu.get( r.nextInt(simu.size()) );
 	}
 
 	/**
@@ -213,7 +230,7 @@ public class NoeudTrap implements Noeud{
 		double pourcentage = (victoires / simulations) * 100.0 ;
 		System.out.println("\t-Pourcentage : " + pourcentage + "\n");
 	}
-	
+
 	public Noeud setAction(Action action) {
 		this.action = action;
 		return this;

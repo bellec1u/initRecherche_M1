@@ -46,8 +46,8 @@ public class Main {
 		// Creer l'arbre de recherche
 		Noeud racine = GAME.getNoeud(etat);
 
-		//FormuleSelection uct = new Uct();
-		FormuleSelection uct = new PWidening();
+		FormuleSelection uct = new Uct();
+		//FormuleSelection uct = new PWidening();
 		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
 
 		// pre rempli déjà l'arbre
@@ -71,6 +71,7 @@ public class Main {
 		
 		System.out.println("");
 		System.out.println("Itérations effectuées : " + iter);
+		System.out.println(racine.retournerNbEnfant());
 
 		/* 
 		 * fin de l'algorithme		
