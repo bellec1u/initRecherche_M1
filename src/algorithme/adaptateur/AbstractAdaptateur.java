@@ -1,27 +1,25 @@
 package algorithme.adaptateur;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import arbre.Action;
 import arbre.Etat;
 import arbre.Noeud;
-import jeu.trapProblem.ActionTrap;
 
 public abstract class AbstractAdaptateur implements Noeud {
 
 	protected Noeud noeud;
-	protected int echantillonage = 0;
+	protected int echantillonage;
+	protected List<Action> espace;
 
 	public AbstractAdaptateur(Noeud n, int e) {
 		this.noeud = n;
 		this.echantillonage = e;
+		this.espace = null;
 	}
 
 	public abstract List<Action> actionsPossible();
-	
-	public abstract boolean resteAction();
-	
+		
 	public abstract Noeud ajouterEnfant(Action action);
 	
 	protected abstract List<Action> getListActionAlea(int min, int max);
@@ -84,6 +82,13 @@ public abstract class AbstractAdaptateur implements Noeud {
 		this.noeud.visiter(recompense);
 	}
 
+	public boolean resteAction() {
+		if (espace == null) {
+			return true;
+		}
+		return ( (espace.size() != 0) );
+	}
+	
 	public void setStatistique(int s, double v) {
 		this.noeud.setStatistique(s, v);
 	}

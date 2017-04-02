@@ -20,7 +20,7 @@ public class EtatTrap implements Etat {
 	private double posPlayer;
 	// mettre le nombre de pas max
 	private int nbStep = 2;
-	private final int minStep = 0, maxStep = 100; // en cm
+	private final int minStep = 0, maxStep = 100; 
 	private int joueur;
 	private List<Action> actions = null;
 

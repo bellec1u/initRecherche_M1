@@ -20,7 +20,7 @@ public class Uct implements FormuleSelection{
 		
 		int best = 0;
 		Noeud enfant = null;
-		
+		System.out.println("ENFANTS : " + noeud.retournerNbEnfant());
 		for( int i = 0 ; i < noeud.retournerNbEnfant() ; i++ ) {
 			enfant = noeud.retournerEnfant(i);
 			bValeur = ( enfant.rapportVictoireSimulation() ) * Math.pow(-1.0, enfant.getMinOrMax() );

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import algorithme.adaptateur.AdaptateurContinue;
 import arbre.Action;
 import arbre.Etat;
 import arbre.Etat.FinDePartie;
@@ -81,10 +82,10 @@ public class NoeudTrap implements Noeud {
 	 */
 	public Noeud ajouterEnfant(Action action) {
 		((ActionTrap) action).ajouterBruit( this.getBruit() );
-		Noeud enfant = new NoeudTrap(this, action);
+		Noeud enfant = new AdaptateurContinue(new NoeudTrap(this, action));
 		enfant.setMinOrMax( 1 - this.getMinOrMax() );
 		//this.etat.supprimerAction(action);
-		this.enfants.add(enfant);
+		this.enfants.add( enfant );
 		return enfant;
 	}
 
@@ -130,9 +131,6 @@ public class NoeudTrap implements Noeud {
 		return this.etat;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Noeud#resultat()
-	 */
 	public double resultat() {
 		for (Integer[] i : (Integer[][])this.etat.getPlateau()) {
 			if (this.etat.getPosJoueur() <= i[0]) {

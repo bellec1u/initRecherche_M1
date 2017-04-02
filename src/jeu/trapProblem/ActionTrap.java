@@ -23,16 +23,29 @@ public class ActionTrap implements Action{
 		return this.lengthStep;
 	}
 
-	/* (non-Javadoc)
-	 * @see arbre.Action#estGagnante(arbre.Noeud)
-	 */
 	public boolean estGagnante(Noeud noeud) {
-		//System.out.println("ici. "+noeud.getEtat().getNbCoups());
-		return (noeud.getEtat().getNbCoups() == 0);
+		/*
+		 * Le jeu n'a pas de critère d'arret
+		 * telle qu'une victoire ou non
+		 * return (noeud.getEtat().getNbCoups() == 0);
+		 */
+		return false;
 	}
 
 	public void ajouterBruit(double x) {
 		this.lengthStep += x;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		ActionTrap trap = (ActionTrap)obj;
+		return (trap.lengthStep == lengthStep);
+	}
+
+	@Override
+	public String toString() {
+		return "pas = " + lengthStep;
+	}
+
+	
 }

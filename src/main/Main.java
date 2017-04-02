@@ -71,19 +71,15 @@ public class Main {
 		
 		System.out.println("");
 		System.out.println("Itérations effectuées : " + iter);
-		System.out.println(racine.retournerNbEnfant());
+		racine.afficherStatistiques();
 
 		/* 
 		 * fin de l'algorithme		
 		 * On choisit la bonne strategie demandée par l'utilisateur
 		 */
 		racine = strategie.selectionner(racine);
-		/*
-		System.out.println("Action choisit : " + racine.getAction());
-		for (int i = 0; i < racine.retournerNbEnfant(); i++) {
-			racine.retournerEnfant(i).afficherStatistiques();
-		}
-		 */
+
+		
 		etat.jouerAction(racine.getAction());
 	}
 

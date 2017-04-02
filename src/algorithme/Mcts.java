@@ -54,11 +54,19 @@ public class Mcts implements Algorithme{
 	/* 2. */
 	private Noeud developper(Noeud noeud) {
 		List<Action> actions = noeud.actionsPossible();
-		for (Action a : actions) {
+		/*	J'ai commenté pour éviter que l'algo parcourt
+		 * ce truc tant que l'erreur n'est pas résolue
+		 * for (Action a : actions) {
 			if ( a.estGagnante( noeud ) ) {
 				return noeud.ajouterEnfant(a);
 			}
-		}
+		}*/
+		/*
+		 * Si tu décommentes tu verras qu'on à 2 comme résultats
+		 * ce qui est absurde 
+		 * un Noeud dans notre algo est un NoeudTrap et pas un adaptateurContinue
+		 * System.out.println("actions possibles : " + actions.size());
+		 */
 		return noeud.ajouterEnfant(actions.get( random.nextInt( actions.size() ) ));
 	}
 

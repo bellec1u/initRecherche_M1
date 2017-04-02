@@ -8,38 +8,43 @@ import java.util.Random;
 import arbre.Action;
 import arbre.Noeud;
 import jeu.trapProblem.ActionTrap;
-import jeu.trapProblem.NoeudTrap;
 
 public class AdaptateurContinue extends AbstractAdaptateur {
 
-	private int nbActions;
-	
 	public AdaptateurContinue(Noeud n) {
 		super(n, 100);
-		this.nbActions = this.echantillonage;
 	}
 
 	public List<Action> actionsPossible() {
-		// on prend l'intervalle des actions
-		// element 1 = borne min
-		// element 2 = borne max
-		List<Action> la = this.noeud.actionsPossible();
-		int min = (int) ((ActionTrap) la.get(0)).getStep();
-		int max = (int) ((ActionTrap) la.get(1)).getStep();
+		if ( espace == null ) {
+			
+			/* on prend l'intervalle des actions
+			 * element 1 = borne min
+			 * element 2 = borne max
+			 */
+			List<Action> la = this.noeud.actionsPossible();
+			int min = (int) ((ActionTrap) la.get(0)).getStep();
+			int max = (int) ((ActionTrap) la.get(1)).getStep();
 
-		//la = this.getListActionAlea(min, max);
-		la = this.getListActionUniforme(min, max);
-				
-		return la;
+			/*
+			 * On a l'intervalle des valeurs possibles,
+			 * on peut donc echantillonner...
+			 */
+			espace = new LinkedList<Action>(this.getListActionUniforme(min, max));
+		}
+		return espace;
 	}
-	
-	public boolean resteAction() {
-		return (/*(this.noeud.getEtat().getNbCoups() != 0) &&*/ (this.nbActions != 0) );
-	}
-	
+
 	public Noeud ajouterEnfant(Action action) {
-		this.nbActions--;
-		return new AdaptateurContinue( this.noeud.ajouterEnfant(action) );
+		this.espace.remove(action);
+		/*
+		 * Je pense qu'ici il y a un soucis,
+		 * soit on new AdaptateurContinue là, soit directement
+		 * dans ajouterEnfant de NoeudTrap à cause du fait qu'on
+		 * ajoute le NoeudTrap à la liste des enfants -> problemes
+		 * je t'expliquerais
+		 */
+		return this.noeud.ajouterEnfant(action) ;
 	}
 
 	/**
