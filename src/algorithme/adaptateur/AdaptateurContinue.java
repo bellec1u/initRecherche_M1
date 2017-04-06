@@ -11,12 +11,24 @@ import jeu.trapProblem.ActionTrap;
 
 public class AdaptateurContinue extends AbstractAdaptateur {
 
+	public AdaptateurContinue (AdaptateurContinue adc) {
+		super(adc.noeud, adc.echantillonage);
+	}
 	public AdaptateurContinue(Noeud n) {
 		super(n, 100);
 	}
 
 	public AdaptateurContinue(Noeud n, AbstractAdaptateur p) {
 		super(n, 100);
+		this.parent = p;
+	}
+
+	public AdaptateurContinue(Noeud n, int e) {
+		super(n, e);
+	}
+
+	public AdaptateurContinue(Noeud n, AbstractAdaptateur p, int e) {
+		super(n, e);
 		this.parent = p;
 	}
 	

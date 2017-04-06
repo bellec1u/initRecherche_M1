@@ -1,6 +1,8 @@
 package main;
 
+import algorithme.Algorithme;
 import algorithme.Mcts;
+import algorithme.MctsPw;
 import algorithme.formule.FormuleSelection;
 import algorithme.formule.Maxi;
 import algorithme.formule.PWidening;
@@ -46,9 +48,9 @@ public class Main {
 		// Creer l'arbre de recherche
 		Noeud racine = GAME.getNoeud(etat);
 
-		FormuleSelection uct = new Uct();
-		//FormuleSelection uct = new PWidening();
-		Mcts mcts = new Mcts( uct ); // On execute l'algorithme
+		//FormuleSelection uct = new Uct();
+		FormuleSelection uct = new PWidening();
+		Algorithme mcts = new MctsPw( uct ); // On execute l'algorithme
 
 		// pre rempli déjà l'arbre
 
@@ -77,8 +79,9 @@ public class Main {
 		 * fin de l'algorithme		
 		 * On choisit la bonne strategie demandée par l'utilisateur
 		 */
+		System.out.println("avant");
 		racine = strategie.selectionner(racine);
-
+		System.out.println("apres le premier avant");
 		
 		etat.jouerAction(racine.getAction());
 	}
