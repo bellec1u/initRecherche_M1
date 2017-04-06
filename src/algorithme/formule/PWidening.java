@@ -9,6 +9,7 @@ import java.util.List;
 import algorithme.adaptateur.AdaptateurContinue;
 import arbre.Action;
 import arbre.Noeud;
+import jeu.trapProblem.NoeudTrap;
 
 /**
  * @author JUNGES Pierre-Marie - M1 Informatique 2016/2017
@@ -28,8 +29,7 @@ public class PWidening implements FormuleSelection{
 		 * On va maintenant échantillonner
 		 * le noeud avec les k prochaines Actions possibles
 		 */
-		Noeud n = new AdaptateurContinue(noeud);
-		Noeud adapt = new AdaptateurContinue(n, k);
+		Noeud adapt = new AdaptateurContinue(noeud, k);
 		List<Action> actions = new LinkedList<Action>(adapt.actionsPossible());
 		List<Action> mem = new LinkedList<Action>(actions);
 
@@ -38,7 +38,7 @@ public class PWidening implements FormuleSelection{
 		double min = Double.NEGATIVE_INFINITY;
 		double bValeur = 0.0;
 		for(int i = 0 ; i < actions.size() ; i++) {
-			enfant = adapt.ajouterEnfant(actions.get(i));
+			enfant = new NoeudTrap(noeud, actions.get(i));
 			int nb = 0;
 			for ( int l = 0 ; l < t ; l++ ) {
 				nb += 1;
@@ -56,8 +56,8 @@ public class PWidening implements FormuleSelection{
 				best = i;
 			}
 		}
-		System.out.println("noeud enfant " + noeud.retournerNbEnfant());
-		System.out.println("adapt enfant " + adapt.retournerNbEnfant());
+		/*System.out.println("noeud enfant " + noeud.retournerNbEnfant());
+		System.out.println("adapt enfant " + adapt.retournerNbEnfant());*/
 		return noeud.ajouterEnfant( mem.get(best) );
 	}
 

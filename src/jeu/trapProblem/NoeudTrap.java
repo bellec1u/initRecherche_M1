@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import algorithme.adaptateur.AdaptateurContinue;
 import arbre.Action;
 import arbre.Etat;
 import arbre.Etat.FinDePartie;

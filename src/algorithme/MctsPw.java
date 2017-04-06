@@ -1,10 +1,6 @@
 package algorithme;
 
-import java.util.List;
-import java.util.Random;
-
 import algorithme.formule.FormuleSelection;
-import arbre.Action;
 import arbre.Noeud;
 
 public class MctsPw implements Algorithme {
@@ -46,10 +42,12 @@ public class MctsPw implements Algorithme {
 	private Noeud mettreAJour(Noeud noeud, double recompense) {
 		
 		while( !noeud.estRacine() ) {
-			noeud.visiter(recompense);
+			noeud.setStatistique(noeud.retournerNbSimulation(), 
+					noeud.retournerNbVictoire() + recompense);
 			noeud = noeud.predecesseur();
 		}
-		noeud.visiter(recompense);
+		noeud.setStatistique(noeud.retournerNbSimulation(), 
+				noeud.retournerNbVictoire() + recompense);
 		return noeud;
 	}
 
