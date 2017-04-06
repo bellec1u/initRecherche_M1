@@ -11,7 +11,8 @@ public abstract class AbstractAdaptateur implements Noeud {
 	protected Noeud noeud;
 	protected int echantillonage;
 	protected List<Action> espace;
-
+	protected AbstractAdaptateur parent;
+	
 	public AbstractAdaptateur(Noeud n, int e) {
 		this.noeud = n;
 		this.echantillonage = e;

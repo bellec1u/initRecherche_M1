@@ -15,12 +15,17 @@ public class AdaptateurContinue extends AbstractAdaptateur {
 		super(n, 100);
 	}
 
+	public AdaptateurContinue(Noeud n, AbstractAdaptateur p) {
+		super(n, 100);
+		this.parent = p;
+	}
+	
 	public Noeud predecesseur() {
-		return new AdaptateurContinue( this.noeud.predecesseur() );
+		return this.parent;
 	}
 	
 	public Noeud retournerEnfant(int indice) {
-		return new AdaptateurContinue( this.noeud.retournerEnfant(indice) );
+		return new AdaptateurContinue( this.noeud.retournerEnfant(indice), this );
 	}
 	
 	public List<Action> actionsPossible() {
@@ -52,7 +57,7 @@ public class AdaptateurContinue extends AbstractAdaptateur {
 		 * ajoute le NoeudTrap à la liste des enfants -> problemes
 		 * je t'expliquerais
 		 */
-		return this.noeud.ajouterEnfant(action) ;
+		return new AdaptateurContinue( this.noeud.ajouterEnfant(action), this );
 	}
 
 	/**

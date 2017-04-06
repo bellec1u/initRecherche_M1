@@ -82,7 +82,7 @@ public class NoeudTrap implements Noeud {
 	 */
 	public Noeud ajouterEnfant(Action action) {
 		((ActionTrap) action).ajouterBruit( this.getBruit() );
-		Noeud enfant = new AdaptateurContinue(new NoeudTrap(this, action));
+		Noeud enfant = new NoeudTrap(this, action);
 		enfant.setMinOrMax( 1 - this.getMinOrMax() );
 		//this.etat.supprimerAction(action);
 		this.enfants.add( enfant );
