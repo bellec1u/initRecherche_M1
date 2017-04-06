@@ -26,20 +26,16 @@ public abstract class AbstractAdaptateur implements Noeud {
 
 	protected abstract List<Action> getListActionUniforme(int min, int max);
 	
+	public abstract Noeud predecesseur();
+	
+	public abstract Noeud retournerEnfant(int indice);
+	
 	public boolean estTerminal() {
 		return this.noeud.estTerminal();
 	}
 
 	public boolean estRacine() {
 		return this.noeud.estRacine();
-	}
-
-	public Noeud predecesseur() {
-		return this.noeud.predecesseur();
-	}
-
-	public Noeud retournerEnfant(int indice) {
-		return this.noeud.retournerEnfant(indice);
 	}
 
 	public Action getAction() {

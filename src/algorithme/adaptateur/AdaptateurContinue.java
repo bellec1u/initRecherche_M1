@@ -15,6 +15,14 @@ public class AdaptateurContinue extends AbstractAdaptateur {
 		super(n, 100);
 	}
 
+	public Noeud predecesseur() {
+		return new AdaptateurContinue( this.noeud.predecesseur() );
+	}
+	
+	public Noeud retournerEnfant(int indice) {
+		return new AdaptateurContinue( this.noeud.retournerEnfant(indice) );
+	}
+	
 	public List<Action> actionsPossible() {
 		if ( espace == null ) {
 			
