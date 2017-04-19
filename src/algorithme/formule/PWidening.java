@@ -24,7 +24,7 @@ public class PWidening implements FormuleSelection{
 	public Noeud selectionner(Noeud noeud) {
 		noeud.visiter(0.0); // nbVisits
 		int t = noeud.retournerNbSimulation();
-		int k = (int)(C * Math.pow(t, alpha));
+		int k = (int)Math.ceil(C * Math.pow(t, alpha));
 		/*
 		 * On va maintenant échantillonner
 		 * le noeud avec les k prochaines Actions possibles
@@ -37,11 +37,13 @@ public class PWidening implements FormuleSelection{
 		int best = 0;
 		double min = Double.NEGATIVE_INFINITY;
 		double bValeur = 0.0;
+
 		for(int i = 0 ; i < actions.size() ; i++) {
 			enfant = new NoeudTrap(noeud, actions.get(i));
 			int nb = 0;
-			for ( int l = 0 ; l < t ; l++ ) {
-				nb += 1;
+
+			for ( int l = 1 ; l < t ; l++ ) {
+					nb += 1;
 			}
 
 			if ( nb == 0 ) {
@@ -50,7 +52,7 @@ public class PWidening implements FormuleSelection{
 				bValeur = ( enfant.resultat() / (nb + 1));
 				bValeur += k * Math.sqrt( Math.log( t ) / (nb + 1));
 			}
-			
+
 			if ( bValeur > min ) {
 				min = bValeur;
 				best = i;

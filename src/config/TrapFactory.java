@@ -5,6 +5,7 @@ import algorithme.formule.FormuleSelection;
 import arbre.Etat;
 import arbre.Etat.FinDePartie;
 import arbre.Noeud;
+import dao.StatistiqueDAO;
 import jeu.trapProblem.EtatTrap;
 import jeu.trapProblem.NoeudTrap;
 import main.Main;
@@ -46,7 +47,6 @@ public class TrapFactory implements GameFactory {
 
 			fin = etat.testFin();
 		} while (fin == FinDePartie.NON);
-
 		System.out.println("Fin de partie.");
 	}
 
