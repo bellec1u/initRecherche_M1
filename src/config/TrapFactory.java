@@ -1,15 +1,13 @@
 package config;
 
 
-import jeu.trapProblem.EtatTrap;
-import jeu.trapProblem.NoeudTrap;
-import main.Main;
-import algorithme.adaptateur.AdaptateurContinue;
 import algorithme.formule.FormuleSelection;
-
 import arbre.Etat;
 import arbre.Etat.FinDePartie;
 import arbre.Noeud;
+import jeu.trapProblem.EtatTrap;
+import jeu.trapProblem.NoeudTrap;
+import main.Main;
 
 public class TrapFactory implements GameFactory {
 
@@ -18,7 +16,7 @@ public class TrapFactory implements GameFactory {
 	}
 
 	public Noeud getNoeud(Etat etat) {
-		Noeud noeud = new AdaptateurContinue( new NoeudTrap(etat) );
+		Noeud noeud = new NoeudTrap(etat) ;
 		noeud.setInitialJoueur(etat.getJoueur());
 		return noeud;
 	}

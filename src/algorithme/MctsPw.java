@@ -27,13 +27,12 @@ public class MctsPw implements Algorithme {
 		return formule.selectionner(noeud);
 	}
 
-	/* 3. on stock plus simu*/
+	/* 3. */
 	private Noeud simuler(Noeud noeud) {
 		Noeud simulation = noeud;
 		
 		while( !simulation.estTerminal() ) {
 			simulation = developper(simulation);
-
 		}
 		return simulation;
 	}

@@ -1,13 +1,11 @@
 package main;
 
 import algorithme.Algorithme;
-import algorithme.Mcts;
 import algorithme.MctsPw;
 import algorithme.formule.FormuleSelection;
 import algorithme.formule.Maxi;
 import algorithme.formule.PWidening;
 import algorithme.formule.Robuste;
-import algorithme.formule.Uct;
 import arbre.Etat;
 import arbre.Noeud;
 import config.Configuration;
@@ -74,14 +72,12 @@ public class Main {
 		System.out.println("");
 		System.out.println("Itérations effectuées : " + iter);
 		racine.afficherStatistiques();
-
+		
 		/* 
 		 * fin de l'algorithme		
 		 * On choisit la bonne strategie demandée par l'utilisateur
 		 */
-		System.out.println("avant");
 		racine = strategie.selectionner(racine);
-		System.out.println("apres le premier avant");
 		
 		etat.jouerAction(racine.getAction());
 	}

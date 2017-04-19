@@ -50,7 +50,6 @@ public class AdaptateurContinue extends AbstractAdaptateur {
 			List<Action> la = this.noeud.actionsPossible();
 			int min = (int) ((ActionTrap) la.get(0)).getStep();
 			int max = (int) ((ActionTrap) la.get(1)).getStep();
-
 			/*
 			 * On a l'intervalle des valeurs possibles,
 			 * on peut donc echantillonner...
@@ -96,13 +95,17 @@ public class AdaptateurContinue extends AbstractAdaptateur {
 	protected List<Action> getListActionUniforme(int min, int max) {
 		// retourne une liste d'actions choisi de maniere uniforme
 		List<Action> actions = new LinkedList<Action>();
-		// on ne prend pas le pas minimal mais comme ca on prend le + grand
-		double i = min + ((max - min + 0.0) / this.echantillonage);
-		while (i < max) {
-			actions.add( new ActionTrap(i) );
-			i = i + ((max - min + 0.0) / this.echantillonage);
-		}
 
+		/*
+		 *	À réfléchir... par rapport à si on souhaite discretiser
+		 *	avec des doubles ou des ints 
+		 */
+		Random r = new Random();
+		for ( int i = 0; i < this.echantillonage; i++ ) {
+			double step = r.nextDouble() * max + min;
+			actions.add( new ActionTrap(step) );
+		}
+		
 		return actions;
 	}
 
